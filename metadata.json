@@ -1,0 +1,8 @@
+{
+  "name": "Vida Medical Centre",
+  "description": "Klinik layanan kesehatan dan medis modern di Gedung The Vida, Kebon Jeruk, Jakarta Barat. Layanan VidaBoost IV Therapy, MCU VidaHealth, VidaFit, Homecare, dan Vaksinasi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
