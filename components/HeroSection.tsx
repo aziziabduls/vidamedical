@@ -113,7 +113,8 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           lightMode={false}
         /> */}
 
-        <Image src="/images/bg_hero_vida.jpeg" alt="" width={1920} height={1080} className="w-full h-full object-cover absolute inset-0 z-0 pointer-events-none" />
+        <Image src="/images/bg_hero_vida.jpeg" alt="" width={1920} height={1080} className="w-full h-full object-cover absolute inset-0 z-0 pointer-events-none hidden md:block" />
+        <Image src="/images/bg_hero_vida_mobile.jpeg" alt="" width={1920} height={1080} className="w-full h-full object-cover absolute inset-0 z-0 pointer-events-none md:hidden" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -122,7 +123,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex justify-center mb-[-70px] sm:mb-28"
+          className="flex justify-center mb-[-10px] sm:mb-28"
         >
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/0 border border-white/0 text-xs text-slate-200">
             {/* <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
