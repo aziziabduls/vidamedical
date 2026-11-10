@@ -162,7 +162,7 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="max-w-2xl mb-12">
-          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-slate-200 text-[#1c2674] text-xs font-semibold mb-2">
+          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-slate-200 text-[#0472B5] text-xs font-semibold mb-2">
             {/* <ShieldCheck className="w-3.5 h-3.5" /> */}
             <span>Pilar Klinis Unggulan</span>
           </div>
@@ -186,7 +186,7 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
                   type="button"
                   onClick={() => setSelectedCoE(coe)}
                   className={`w-full text-left p-4 rounded-xl border transition-colors cursor-pointer flex items-center justify-between ${isSelected
-                      ? 'bg-white border-[#1c2674] shadow-sm ring-1 ring-[#1c2674]/15'
+                      ? 'bg-white border-[#0472B5] shadow-sm ring-1 ring-[#0472B5]/15'
                       : 'bg-white/60 border-slate-200 hover:bg-white hover:border-slate-300'
                     }`}
                 >
@@ -194,11 +194,11 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
                     <div className="text-[11px] font-medium text-slate-500">
                       {coe.category}
                     </div>
-                    <div className={`text-xs sm:text-sm font-semibold mt-0.5 ${isSelected ? 'text-[#1c2674]' : 'text-slate-900'}`}>
+                    <div className={`text-xs sm:text-sm font-semibold mt-0.5 ${isSelected ? 'text-[#0472B5]' : 'text-slate-900'}`}>
                       {coe.title}
                     </div>
                   </div>
-                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${isSelected ? 'text-[#1c2674] translate-x-0.5' : 'text-slate-400'}`} />
+                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${isSelected ? 'text-[#0472B5] translate-x-0.5' : 'text-slate-400'}`} />
                 </button>
               );
             })}
@@ -249,7 +249,7 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
                         key={idx}
                         className="flex items-start space-x-2 text-xs text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200/60"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#1c2674] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0472B5] shrink-0 mt-0.5" />
                         <span>{proc}</span>
                       </div>
                     ))}
@@ -262,7 +262,7 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
                     whileTap={{ scale: 0.98 }}
                     type="button"
                     onClick={() => onOpenBooking('coe', `Janji Temu: ${selectedCoE.title}`)}
-                    className="flex-1 py-2.5 px-4 rounded-xl bg-[#1c2674] hover:bg-[#151e52] text-white font-semibold text-xs text-center shadow-sm transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+                    className="flex-1 py-2.5 px-4 rounded-xl bg-[#0472B5] hover:bg-[#035c93] text-white font-semibold text-xs text-center shadow-sm transition-colors flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     <Calendar className="w-4 h-4 text-amber-400" />
                     <span>Jadwalkan Konsultasi</span>

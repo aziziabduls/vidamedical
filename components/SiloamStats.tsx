@@ -9,7 +9,7 @@ const STATS = [
     value: '41+',
     label: 'Rumah Sakit',
     desc: 'Di 28 kota di seluruh nusantara',
-    highlightColor: 'text-[#1c2674]',
+    highlightColor: 'text-[#0472B5]',
     bgColor: 'bg-blue-50',
   },
   {
@@ -17,7 +17,7 @@ const STATS = [
     value: '12.500+',
     label: 'Tenaga Medis',
     desc: 'Dokter spesialis & paramedis berpengalaman',
-    highlightColor: 'text-[#1c2674]',
+    highlightColor: 'text-[#0472B5]',
     bgColor: 'bg-amber-50',
   },
   {
@@ -25,7 +25,7 @@ const STATS = [
     value: '400+',
     label: 'Mitra Asuransi',
     desc: 'Kerjasama korporasi & penjaminan klaim',
-    highlightColor: 'text-[#1c2674]',
+    highlightColor: 'text-[#0472B5]',
     bgColor: 'bg-emerald-50',
   },
   {
@@ -33,7 +33,7 @@ const STATS = [
     value: '10.000.000+',
     label: 'Pasien Terlayani',
     desc: 'Kepercayaan keluarga Indonesia',
-    highlightColor: 'text-[#1c2674]',
+    highlightColor: 'text-[#0472B5]',
     bgColor: 'bg-purple-50',
   },
 ];
@@ -56,7 +56,7 @@ export default function SiloamStats() {
                   <Icon className={`w-6 h-6 ${item.highlightColor}`} />
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-black text-[#1c2674] tracking-tight">
+                  <div className="text-2xl sm:text-3xl font-black text-[#0472B5] tracking-tight">
                     {item.value}
                   </div>
                   <div className="text-sm font-bold text-slate-800">

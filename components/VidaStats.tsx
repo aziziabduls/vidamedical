@@ -41,7 +41,7 @@ export default function VidaStats() {
               transition={{ duration: 0.4, delay: idx * 0.08 }}
               className={`pt-4 sm:pt-0 ${idx > 0 ? 'sm:pl-6' : ''}`}
             >
-              <div className="text-xl sm:text-2xl font-bold text-[#1c2674] tracking-tight tabular-nums">
+              <div className="text-xl sm:text-2xl font-bold text-[#0472B5] tracking-tight tabular-nums">
                 {item.value}
               </div>
               <div className="text-xs font-semibold text-slate-800 mt-1">

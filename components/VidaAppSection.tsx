@@ -15,7 +15,7 @@ import {
 
 export default function VidaAppSection() {
   return (
-    <section id="vida-app" className="py-16 bg-[#151e52] text-white font-sans border-b border-slate-200">
+    <section id="vida-app" className="py-16 bg-[#0472B5] text-white font-sans border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Text Description */}
@@ -102,11 +102,11 @@ export default function VidaAppSection() {
             <div className="w-full max-w-sm bg-white rounded-2xl p-5 text-slate-900 shadow-xl border border-slate-200">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div className="flex items-center space-x-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#1c2674] flex items-center justify-center text-amber-400 font-bold text-xs">
+                  <div className="w-7 h-7 rounded-lg bg-[#0472B5] flex items-center justify-center text-amber-400 font-bold text-xs">
                     V
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-[#1c2674]">MyVida Patient Portal</div>
+                    <div className="text-xs font-bold text-[#0472B5]">MyVida Patient Portal</div>
                     <div className="text-[10px] text-slate-500">Gedung The Vida</div>
                   </div>
                 </div>
@@ -119,7 +119,7 @@ export default function VidaAppSection() {
               <div className="mt-4 p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-xs">
                 <div className="text-[10px] text-slate-500 font-normal">Nomor Rekam Medis (MRN)</div>
                 <div className="font-bold text-slate-900 tabular-nums">MRN-7740291</div>
-                <div className="text-[11px] text-[#1c2674] font-medium mt-0.5">
+                <div className="text-[11px] text-[#0472B5] font-medium mt-0.5">
                   Andreas Halim · Program VidaFit
                 </div>
               </div>
@@ -140,14 +140,14 @@ export default function VidaAppSection() {
               <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700">
                 <div className="flex justify-between items-center p-2 rounded hover:bg-slate-50">
                   <span className="flex items-center space-x-2">
-                    <FileText className="w-3.5 h-3.5 text-[#1c2674]" />
+                    <FileText className="w-3.5 h-3.5 text-[#0472B5]" />
                     <span>Laporan MCU Eksekutif.pdf</span>
                   </span>
                   <span className="text-[10px] text-slate-400 tabular-nums">2.4 MB</span>
                 </div>
                 <div className="flex justify-between items-center p-2 rounded hover:bg-slate-50">
                   <span className="flex items-center space-x-2">
-                    <FileText className="w-3.5 h-3.5 text-[#1c2674]" />
+                    <FileText className="w-3.5 h-3.5 text-[#0472B5]" />
                     <span>Hasil Pemindaian InBody 770.pdf</span>
                   </span>
                   <span className="text-[10px] text-slate-400 tabular-nums">1.1 MB</span>

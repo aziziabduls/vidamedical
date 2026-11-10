@@ -34,7 +34,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 font-sans selection:bg-[#ffcf00] selection:text-[#1c2674]">
+    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 font-sans selection:bg-[#ffcf00] selection:text-[#0472B5]">
       {/* 1. Header Navbar (Top Utility + Main Nav + Emergency Hotline) */}
       <Navbar onOpenBooking={openBooking} />
 
@@ -44,7 +44,7 @@ export default function HomePage() {
         <HeroSection onOpenBooking={openBooking} />
 
         {/* 3. Statistics Counter Jaringan Vida Medical Centre di Gedung The Vida */}
-        <VidaStats />
+        {/* <VidaStats /> */}
 
         {/* 4. Centers of Excellence (8 Pilar Layanan Unggulan Vida) */}
         <CentersOfExcellence onOpenBooking={openBooking} />
@@ -56,7 +56,7 @@ export default function HomePage() {
         <HeartRiskCalculator onOpenBooking={openBooking} />
 
         {/* 7. Kisah Inspiratif Pasien (#BersamaVida) */}
-        <PatientStorySection onOpenBooking={openBooking} />
+        {/* <PatientStorySection onOpenBooking={openBooking} /> */}
 
         {/* 8. MyVida Patient Portal & Digital Health App Showcase */}
         <VidaAppSection />

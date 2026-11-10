@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import GhostFibers from './GhostFibers';
 import {
   Search,
   MapPin,
@@ -20,6 +21,9 @@ import {
   Heart,
   Clock,
   Package,
+  HeartHandshake,
+  HeartPulse,
+  ActivitySquare,
 } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -60,7 +64,25 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative bg-[#151e52] text-white pt-12 pb-20 font-sans border-b border-slate-200">
+    <section className="relative bg-[#0472B5] text-white pt-12 pb-20 font-sans border-b border-slate-200 overflow-hidden">
+      {/* Background GhostFibers Animation */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <GhostFibers
+          glowColor="#ffffff"
+          lineColor="#ffffff"
+          secondaryColor="#cbd5e1"
+          layers={3}
+          twist={1.2}
+          threads={72}
+          fiberStyle="dots"
+          depthOfField={0.85}
+          hoverEffect="focus"
+          intro={true}
+          mouseInteraction={true}
+          className="opacity-70"
+        />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Eyebrow Clinical Badge */}
         <motion.div
@@ -69,11 +91,12 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           transition={{ duration: 0.4 }}
           className="flex justify-center mb-4"
         >
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs text-slate-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <span className="font-medium text-amber-300">Standar Pelayanan Medis Paripurna</span>
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/0 border border-white/0 text-xs text-slate-200">
+            {/* <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span className="font-medium text-amber-300">Vida</span>
             <span className="text-white/40">·</span>
-            <span>Gedung The Vida Lt. Ground & Mezzanine</span>
+            <span>Medical Centre</span> */}
+            <span className="font-medium text-transparent">Vida</span>
           </div>
         </motion.div>
 
@@ -106,11 +129,11 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
               type="button"
               onClick={() => setActiveTab('doctor')}
               className={`flex items-center space-x-2 pb-2 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === 'doctor'
-                ? 'border-[#1c2674] text-[#1c2674] font-semibold'
+                ? 'border-[#0472B5] text-[#0472B5] font-semibold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
             >
-              <Stethoscope className="w-4 h-4 text-[#1c2674]" />
+              <Stethoscope className="w-4 h-4 text-[#0472B5]" />
               <span>Semua Dokter & Jadwal</span>
             </button>
 
@@ -118,11 +141,11 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
               type="button"
               onClick={() => setActiveTab('unit')}
               className={`flex items-center space-x-2 pb-2 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === 'unit'
-                ? 'border-[#1c2674] text-[#1c2674] font-semibold'
+                ? 'border-[#0472B5] text-[#0472B5] font-semibold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
             >
-              <Building2 className="w-4 h-4 text-[#1c2674]" />
+              <Building2 className="w-4 h-4 text-[#0472B5]" />
               <span>Poli & Unit Spesialis</span>
             </button>
 
@@ -130,7 +153,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
               type="button"
               onClick={() => setActiveTab('popular')}
               className={`flex items-center space-x-2 pb-2 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === 'popular'
-                ? 'border-[#1c2674] text-[#1c2674] font-semibold'
+                ? 'border-[#0472B5] text-[#0472B5] font-semibold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
             >
@@ -153,7 +176,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Contoh: dr. Gizi, Infus Vitamin, EKG..."
-                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#1c2674] focus:bg-white transition-colors"
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:bg-white transition-colors"
                 />
               </div>
             </div>
@@ -168,7 +191,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                 <select
                   value={selectedUnit}
                   onChange={(e) => setSelectedUnit(e.target.value)}
-                  className="w-full pl-10 pr-7 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#1c2674] focus:bg-white transition-colors truncate cursor-pointer"
+                  className="w-full pl-10 pr-7 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:bg-white transition-colors truncate cursor-pointer"
                 >
                   {CLINICAL_UNITS.map((unit, idx) => (
                     <option key={idx} value={unit}>
@@ -187,7 +210,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full py-2.5 px-4 rounded-xl bg-[#1c2674] hover:bg-[#151e52] text-white font-semibold text-xs sm:text-sm transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-sm"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#0472B5] hover:bg-[#035c93] text-white font-semibold text-xs sm:text-sm transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-sm"
               >
                 <Search className="w-4 h-4 text-amber-400" />
                 <span>Cari Layanan</span>
@@ -206,7 +229,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                   setSearchTerm(chip);
                   onOpenBooking('popular', `Pencarian: ${chip}`);
                 }}
-                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-[#1c2674] border border-slate-200 transition-colors font-medium text-[11px] cursor-pointer"
+                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-[#0472B5] border border-slate-200 transition-colors font-medium text-[11px] cursor-pointer"
               >
                 {chip}
               </button>
@@ -243,7 +266,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
               className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
             >
               <div className="w-10 h-10 rounded-lg bg-white/10 text-amber-400 flex items-center justify-center mb-2">
-                <Sparkles className="w-5 h-5" />
+                <HeartPulse className="w-5 h-5" />
               </div>
               <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
                 VidaBoost IV
@@ -288,7 +311,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
               className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
             >
               <div className="w-10 h-10 rounded-lg bg-white/10 text-amber-400 flex items-center justify-center mb-2">
-                <Activity className="w-5 h-5" />
+                <ActivitySquare className="w-5 h-5" />
               </div>
               <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
                 VidaFit

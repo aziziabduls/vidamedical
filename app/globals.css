@@ -2,9 +2,11 @@
 @import "tw-animate-css";
 
 @theme {
-  --color-vida-navy: #151e52;
-  --color-vida-navy-light: #1c2674;
-  --color-vida-navy-surface: #202b78;
+  --color-vida-primary: #0472B5;
+  --color-vida-primary-hover: #035c93;
+  --color-vida-navy: #0472B5;
+  --color-vida-navy-light: #0472B5;
+  --color-vida-navy-surface: #035c93;
   --color-vida-accent: #d97706;
   --color-vida-gold: #f59e0b;
   --color-vida-gold-light: #fffbeb;
@@ -28,7 +30,7 @@
 
   /* Quiet text selection */
   ::selection {
-    background-color: #1c2674;
+    background-color: #0472B5;
     color: #ffffff;
   }
 }

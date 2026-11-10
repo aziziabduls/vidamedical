@@ -15,7 +15,7 @@ import {
 
 export default function MySiloamAppSection() {
   return (
-    <section id="mysiloam" className="py-20 bg-gradient-to-br from-[#1c2674] via-[#1a2882] to-[#121950] text-white font-sans overflow-hidden relative">
+    <section id="mysiloam" className="py-20 bg-gradient-to-br from-[#0472B5] via-[#035c93] to-[#02446d] text-white font-sans overflow-hidden relative">
       {/* Decorative Orbs */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#ffcf00]/10 rounded-full blur-3xl pointer-events-none -mr-32 -mt-32" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none -ml-32 -mb-32" />
@@ -126,10 +126,10 @@ export default function MySiloamAppSection() {
                 {/* App Header */}
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center space-x-2">
-                    <div className="w-7 h-7 rounded-lg bg-[#1c2674] flex items-center justify-center text-[#ffcf00] font-black text-xs">
+                    <div className="w-7 h-7 rounded-lg bg-[#0472B5] flex items-center justify-center text-[#ffcf00] font-black text-xs">
                       S
                     </div>
-                    <span className="font-extrabold text-sm text-[#1c2674]">MySiloam</span>
+                    <span className="font-extrabold text-sm text-[#0472B5]">MySiloam</span>
                   </div>
                   <span className="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-full">
                     Online
@@ -137,7 +137,7 @@ export default function MySiloamAppSection() {
                 </div>
 
                 {/* Patient Profile Card */}
-                <div className="bg-[#1c2674] text-white p-3 rounded-xl shadow">
+                <div className="bg-[#0472B5] text-white p-3 rounded-xl shadow">
                   <div className="text-[10px] text-slate-300">Nomor Rekam Medis (MRN)</div>
                   <div className="text-sm font-bold">SLM-8829103</div>
                   <div className="text-xs text-[#ffcf00] font-semibold mt-1">Hendra Johari • Pasien Terdaftar</div>
@@ -149,7 +149,7 @@ export default function MySiloamAppSection() {
                     <span>ANTREAN HARI INI</span>
                     <span className="animate-pulse text-red-600">● SEDANG BERJALAN</span>
                   </div>
-                  <div className="text-2xl font-black text-[#1c2674] mt-1">A-014</div>
+                  <div className="text-2xl font-black text-[#0472B5] mt-1">A-014</div>
                   <div className="text-[11px] text-slate-600 font-medium">
                     dr. Spesialis Jantung (Sp.JP) • Ruang 204
                   </div>
@@ -161,7 +161,7 @@ export default function MySiloamAppSection() {
                 {/* Quick Menu Icons */}
                 <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-slate-700">
                   <div className="p-2 bg-slate-50 rounded-lg border border-slate-100">
-                    <FileText className="w-4 h-4 mx-auto text-[#1c2674] mb-1" />
+                    <FileText className="w-4 h-4 mx-auto text-[#0472B5] mb-1" />
                     <span>Hasil Lab</span>
                   </div>
                   <div className="p-2 bg-slate-50 rounded-lg border border-slate-100">

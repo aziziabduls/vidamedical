@@ -66,7 +66,7 @@ export default function HealthpediaSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
           <div className="max-w-2xl">
             <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-800 text-xs font-semibold mb-2">
-              {/* <BookOpen className="w-3.5 h-3.5 text-[#1c2674]" /> */}
+              {/* <BookOpen className="w-3.5 h-3.5 text-[#0472B5]" /> */}
               <span>Edukasi Medis Ilmiah</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
@@ -79,7 +79,7 @@ export default function HealthpediaSection() {
 
           <a
             href="#doctor-search"
-            className="mt-4 md:mt-0 inline-flex items-center space-x-1 text-xs font-semibold text-[#1c2674] hover:underline"
+            className="mt-4 md:mt-0 inline-flex items-center space-x-1 text-xs font-semibold text-[#0472B5] hover:underline"
           >
             <span>Semua Artikel Medis</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -94,7 +94,7 @@ export default function HealthpediaSection() {
               type="button"
               onClick={() => setSelectedCat(cat)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${selectedCat === cat
-                  ? 'bg-[#1c2674] text-white shadow-xs'
+                  ? 'bg-[#0472B5] text-white shadow-xs'
                   : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
                 }`}
             >
@@ -134,7 +134,7 @@ export default function HealthpediaSection() {
 
                 <div className="mt-5 pt-3.5 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
                   <div className="flex items-center space-x-1.5 font-medium text-slate-700">
-                    <UserCheck className="w-3.5 h-3.5 text-[#1c2674]" />
+                    <UserCheck className="w-3.5 h-3.5 text-[#0472B5]" />
                     <span>Ditinjau: {art.author}</span>
                   </div>
                   <div className="flex items-center justify-between text-[10px] text-slate-400">

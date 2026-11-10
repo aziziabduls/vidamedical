@@ -25,7 +25,7 @@ export default function FAQSection() {
     },
     {
       q: 'Bagaimana petunjuk arah menuju lokasi klinik di Gedung The Vida Kebon Jeruk?',
-      a: 'Klinik berada di Gedung The Vida, Lantai Dasar, Jl. Raya Perjuangan No. 8, Kebon Jeruk, Jakarta Barat. Sangat dekat dengan pintu keluar tol Kebon Jeruk (Tol Jakarta-Tangerang), dekat Studio RCTI dan RS Siloam Kebon Jeruk. Gedung menyediakan lobi drop-off dan area parkir basement luas.',
+      a: 'Klinik berada di Gedung The Vida, Lantai Dasar, The Vida Building, Jl. Perjuangan No.8, RT.1/RW.7, Kb. Jeruk, Kec. Kb. Jeruk, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530.',
     },
   ];
 
@@ -61,9 +61,8 @@ export default function FAQSection() {
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-150 ${
-                      isOpen ? 'rotate-180 text-slate-800' : ''
-                    }`}
+                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-150 ${isOpen ? 'rotate-180 text-slate-800' : ''
+                      }`}
                     strokeWidth={1.5}
                   />
                 </button>

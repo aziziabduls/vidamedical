@@ -25,7 +25,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center space-x-2">
-                <div className="w-7 h-7 rounded-lg bg-[#1c2674] flex items-center justify-center text-amber-400 font-bold text-xs">
+                <div className="w-7 h-7 rounded-lg bg-[#0472B5] flex items-center justify-center text-amber-400 font-bold text-xs">
                   V
                 </div>
                 <div>
@@ -73,7 +73,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
                 }}
                 className="w-full flex items-center space-x-2 p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 transition-colors text-xs font-semibold cursor-pointer"
               >
-                <Calendar className="w-4 h-4 text-[#1c2674] shrink-0" />
+                <Calendar className="w-4 h-4 text-[#0472B5] shrink-0" />
                 <div className="text-left">
                   <div>Formulir Janji Temu</div>
                   <div className="text-[10px] text-slate-500 font-normal">Pilih jadwal konsultasi dokter</div>
@@ -81,7 +81,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
               </button>
 
               <a
-                href="tel:0215367890"
+                href="tel:08115750260"
                 className="flex items-center space-x-2 p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 transition-colors text-xs font-semibold"
               >
                 <Phone className="w-4 h-4 text-slate-600 shrink-0" />
@@ -100,7 +100,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
         whileTap={{ scale: 0.95 }}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3.5 py-2.5 rounded-full bg-[#1c2674] hover:bg-[#151e52] text-white shadow-lg border border-slate-700/50 transition-colors cursor-pointer"
+        className="flex items-center space-x-2 px-3.5 py-2.5 rounded-full bg-[#0472B5] hover:bg-[#035c93] text-white shadow-lg border border-slate-700/50 transition-colors cursor-pointer"
         aria-label="Layanan Bantuan Pasien"
       >
         <MessageCircle className="w-4 h-4 text-amber-400" />

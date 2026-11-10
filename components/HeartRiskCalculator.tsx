@@ -91,7 +91,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
             {/* Input Form Column */}
             <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-slate-200">
               <h3 className="text-sm font-bold text-slate-900 mb-5 flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-[#1c2674]" />
+                <Activity className="w-4 h-4 text-[#0472B5]" />
                 <span>Parameter Klinis Pasien</span>
               </h3>
 
@@ -106,7 +106,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       type="button"
                       onClick={() => setGender('pria')}
                       className={`py-2 px-3 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${gender === 'pria'
-                          ? 'border-[#1c2674] bg-[#1c2674] text-white shadow-xs'
+                          ? 'border-[#0472B5] bg-[#0472B5] text-white shadow-xs'
                           : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
                         }`}
                     >
@@ -116,7 +116,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       type="button"
                       onClick={() => setGender('wanita')}
                       className={`py-2 px-3 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${gender === 'wanita'
-                          ? 'border-[#1c2674] bg-[#1c2674] text-white shadow-xs'
+                          ? 'border-[#0472B5] bg-[#0472B5] text-white shadow-xs'
                           : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
                         }`}
                     >
@@ -138,7 +138,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       max={80}
                       value={age}
                       onChange={(e) => setAge(Number(e.target.value))}
-                      className="w-full accent-[#1c2674] cursor-pointer"
+                      className="w-full accent-[#0472B5] cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 mt-0.5 tabular-nums">
                       <span>20 th</span>
@@ -158,7 +158,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       max={200}
                       value={systolic}
                       onChange={(e) => setSystolic(Number(e.target.value))}
-                      className="w-full accent-[#1c2674] cursor-pointer"
+                      className="w-full accent-[#0472B5] cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 mt-0.5 tabular-nums">
                       <span>90 normal</span>
@@ -181,7 +181,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       max={320}
                       value={cholesterol}
                       onChange={(e) => setCholesterol(Number(e.target.value))}
-                      className="w-full accent-[#1c2674] cursor-pointer"
+                      className="w-full accent-[#0472B5] cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 mt-0.5 tabular-nums">
                       <span>&lt;200 ideal</span>
@@ -223,7 +223,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       type="checkbox"
                       checked={smoker}
                       onChange={(e) => setSmoker(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#1c2674] focus:ring-[#1c2674]"
+                      className="w-4 h-4 rounded text-[#0472B5] focus:ring-[#0472B5]"
                     />
                     <span className="text-xs font-medium text-slate-800">Perokok aktif</span>
                   </label>
@@ -233,7 +233,7 @@ export default function HeartRiskCalculator({ onOpenBooking }: HeartRiskCalculat
                       type="checkbox"
                       checked={diabetes}
                       onChange={(e) => setDiabetes(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#1c2674] focus:ring-[#1c2674]"
+                      className="w-4 h-4 rounded text-[#0472B5] focus:ring-[#0472B5]"
                     />
                     <span className="text-xs font-medium text-slate-800">Riwayat diabetes / gula tinggi</span>
                   </label>

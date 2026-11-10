@@ -13,36 +13,38 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#10173d] text-slate-300 font-sans border-t border-blue-900/40 pt-14 pb-8">
+    <footer className="bg-[#0472B5] text-slate-300 font-sans border-t border-[#0472B5]/30 pt-14 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-white/10">
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-3.5">
             <div className="flex items-center space-x-2.5">
-              <div className="w-9 h-9 rounded-lg bg-[#1c2674] flex items-center justify-center text-amber-400">
+              {/* <div className="w-9 h-9 rounded-lg bg-[#0472B5] flex items-center justify-center text-amber-400">
                 <svg viewBox="0 0 40 40" className="w-5 h-5 fill-current">
-                  <path d="M20 3L6 8v12c0 9 6 15 14 17 8-2 14-8 14-17V8L20 3z" fill="#1c2674" />
+                  <path d="M20 3L6 8v12c0 9 6 15 14 17 8-2 14-8 14-17V8L20 3z" fill="#0472B5" />
                   <path d="M17 11h6v6h6v6h-6v6h-6v-6h-6v-6h6v-6z" fill="#f59e0b" />
                 </svg>
-              </div>
+              </div> */}
+              <img src="./images/vida_logo.jpg" alt="vida_logo" className="w-10 h-10 border-[0.1px] border-[#0472B5] rounded-sm shadow-sm transition-transform duration-200 group-hover:scale-[1.02]" />
               <div>
                 <span className="text-lg font-bold text-white tracking-tight">
-                  Vida<span className="text-amber-400">.</span>
-                  <span className="text-[11px] font-semibold text-slate-300 ml-1.5">
+                  Vida Medical Centre
+                  {/* <span className="text-amber-400">.</span> */}
+                  {/* <span className="text-[11px] font-semibold text-slate-300 ml-1.5">
                     Medical Centre
-                  </span>
+                  </span> */}
                 </span>
-                <p className="text-[11px] text-slate-400">
+                {/* <p className="text-[11px] text-slate-400">
                   Klinik Medis & Kebugaran Terpadu
-                </p>
+                </p> */}
               </div>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+            <p className="text-xs text-slate-200 leading-relaxed max-w-sm">
               Pelayanan kesehatan modern berstandar klinis terpercaya di Kebon Jeruk, Jakarta Barat. Melayani konsultasi dokter spesialis, lounge infus vitamin, evaluasi gizi klinis, dan perawatan medis di rumah.
             </p>
 
-            <div className="pt-1 flex flex-wrap items-center gap-2 text-[11px] text-slate-300">
+            {/* <div className="pt-1 flex flex-wrap items-center gap-2 text-[11px] text-slate-300">
               <div className="px-2.5 py-1 rounded bg-white/5 border border-white/10 flex items-center space-x-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
                 <span>Akreditasi Paripurna KARS</span>
@@ -51,7 +53,7 @@ export default function Footer() {
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Farmasi Resmi BPOM</span>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Pusat Layanan Unggulan */}
@@ -115,23 +117,23 @@ export default function Footer() {
                   MyVida Patient Portal
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#patient-story" className="hover:text-white transition-colors">
                   Kisah Pasien (#BersamaVida)
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="#healthpedia" className="hover:text-white transition-colors">
                   Healthpedia Artikel Medis
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#comprehensive-services" className="hover:text-white transition-colors">
                   Mitra Asuransi & Rekanan
                 </a>
-              </li>
+              </li> */}
               <li>
-                <a href="https://wa.me/628118951181" className="hover:text-white transition-colors">
+                <a href="https://wa.me/628115750260" className="hover:text-white transition-colors">
                   Kerjasama MCU Korporasi
                 </a>
               </li>
@@ -147,9 +149,7 @@ export default function Footer() {
               <div className="flex items-start space-x-2">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
-                  Gedung The Vida, Lt. Ground & Mezzanine, <br />
-                  Jl. Raya Perjuangan No. 8, Kebon Jeruk, <br />
-                  Jakarta Barat 11530
+                  The Vida Building, Jl. Perjuangan No.8, RT.1/RW.7, Kb. Jeruk, Kec. Kb. Jeruk, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530
                 </span>
               </div>
 
@@ -161,7 +161,7 @@ export default function Footer() {
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>
-                  Hotline Klinik: <strong className="text-white font-semibold">(021) 5367-8900</strong>
+                  Hotline Klinik: <a href="tel:08115750260" className="text-white font-semibold">0811-5750-260</a>
                 </span>
               </div>
 

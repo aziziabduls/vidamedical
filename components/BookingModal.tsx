@@ -153,7 +153,7 @@ function BookingModalInner({
         {/* Modal Header */}
         <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-[#1c2674] text-[#ffcf00] flex items-center justify-center font-bold text-xs">
+            <div className="w-7 h-7 rounded-md bg-[#0472B5] text-[#ffcf00] flex items-center justify-center font-bold text-xs">
               V
             </div>
             <div>
@@ -467,7 +467,7 @@ function BookingModalInner({
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 px-4 bg-[#ffcf00] hover:bg-[#e5ba00] text-[#1c2674] font-bold text-xs sm:text-sm rounded-xl shadow transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 bg-[#ffcf00] hover:bg-[#e5ba00] text-[#02446d] font-bold text-xs sm:text-sm rounded-xl shadow transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Calendar className="w-4 h-4" strokeWidth={2} />
                   <span>Lanjutkan Reservasi ke WhatsApp Resmi</span>

@@ -72,7 +72,7 @@ export default function PatientStorySection({ onOpenBooking }: PatientStorySecti
             >
               <div>
                 <div className="flex items-center justify-between mb-3 text-xs">
-                  <span className="font-semibold text-[#1c2674]">
+                  <span className="font-semibold text-[#0472B5]">
                     {story.tag}
                   </span>
                   <span className="text-slate-500 font-normal">
@@ -84,7 +84,7 @@ export default function PatientStorySection({ onOpenBooking }: PatientStorySecti
                   {story.storyTitle}
                 </h3>
 
-                <blockquote className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed pl-3 border-l-2 border-[#1c2674]/30">
+                <blockquote className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed pl-3 border-l-2 border-[#0472B5]/30">
                   “{story.quote}”
                 </blockquote>
 
@@ -94,7 +94,7 @@ export default function PatientStorySection({ onOpenBooking }: PatientStorySecti
                   </span>
                   {story.outcomes.map((item, oIdx) => (
                     <div key={oIdx} className="flex items-start space-x-2 text-xs text-slate-600">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#1c2674] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0472B5] shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}

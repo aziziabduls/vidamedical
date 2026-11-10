@@ -271,7 +271,7 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
                 onClick={() => setActiveCategoryId(cat.id)}
                 className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                   isActive
-                    ? 'bg-[#1c2674] text-white shadow-sm'
+                    ? 'bg-[#0472B5] text-white shadow-sm'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
                 }`}
               >
@@ -294,7 +294,7 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
           <button
             type="button"
             onClick={() => onSelectService(activeCategory.id, activeCategory.title)}
-            className="shrink-0 px-3.5 py-2 rounded-lg bg-[#1c2674] hover:bg-[#151e52] text-white font-medium text-xs transition-colors flex items-center space-x-1.5 justify-center cursor-pointer shadow-sm"
+            className="shrink-0 px-3.5 py-2 rounded-lg bg-[#0472B5] hover:bg-[#035c93] text-white font-medium text-xs transition-colors flex items-center space-x-1.5 justify-center cursor-pointer shadow-sm"
           >
             <Calendar className="w-3.5 h-3.5 text-amber-400" />
             <span>Reservasi Paket Ini</span>
@@ -316,7 +316,7 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
                 key={idx}
                 className={`rounded-xl p-5 border flex flex-col justify-between transition-colors ${
                   item.popular
-                    ? 'bg-white border-[#1c2674] shadow-sm ring-1 ring-[#1c2674]/15'
+                    ? 'bg-white border-[#0472B5] shadow-sm ring-1 ring-[#0472B5]/15'
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
@@ -334,7 +334,7 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
 
                   <div className="mt-3 pb-3 border-b border-slate-100">
                     <div className="text-[11px] text-slate-500 font-normal">Investasi biaya:</div>
-                    <div className="text-lg font-bold text-[#1c2674] tabular-nums mt-0.5">
+                    <div className="text-lg font-bold text-[#0472B5] tabular-nums mt-0.5">
                       {item.price}
                     </div>
                   </div>
@@ -345,7 +345,7 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
                     </span>
                     {item.features.map((feat, fIdx) => (
                       <div key={fIdx} className="flex items-start space-x-2 text-xs text-slate-600">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#1c2674] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0472B5] shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -359,7 +359,7 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
                     onClick={() => onSelectService(activeCategory.id, item.name)}
                     className={`w-full py-2 px-3 rounded-lg font-semibold text-xs transition-colors flex items-center justify-center space-x-1.5 cursor-pointer ${
                       item.popular
-                        ? 'bg-[#1c2674] hover:bg-[#151e52] text-white shadow-sm'
+                        ? 'bg-[#0472B5] hover:bg-[#035c93] text-white shadow-sm'
                         : 'bg-slate-100 hover:bg-slate-200/80 text-slate-800'
                     }`}
                   >
