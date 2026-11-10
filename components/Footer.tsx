@@ -149,7 +149,7 @@ export default function Footer() {
               <div className="flex items-start space-x-2">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
-                  The Vida Building, Jl. Perjuangan No.8, RT.1/RW.7, Kb. Jeruk, Kec. Kb. Jeruk, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530
+                  The Vida Building Lantai 6, Jl. Perjuangan No.8, RT.1/RW.7, Kb. Jeruk, Kec. Kb. Jeruk, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530
                 </span>
               </div>
 

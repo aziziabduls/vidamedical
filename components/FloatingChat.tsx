@@ -53,7 +53,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
 
             <div className="mt-3.5 space-y-1.5">
               <a
-                href="https://wa.me/628118951181"
+                href="https://wa.me/628115750260"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200/80 transition-colors text-xs font-semibold"
@@ -61,7 +61,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
                 <MessageCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                 <div className="text-left">
                   <div>WhatsApp Resepsionis</div>
-                  <div className="text-[10px] text-emerald-700 font-normal">0811 8951 181</div>
+                  <div className="text-[10px] text-emerald-700 font-normal">08115750260</div>
                 </div>
               </a>
 
@@ -87,7 +87,7 @@ export default function FloatingChat({ onOpenBooking }: FloatingChatProps) {
                 <Phone className="w-4 h-4 text-slate-600 shrink-0" />
                 <div className="text-left">
                   <div>Hotline Klinik</div>
-                  <div className="text-[10px] text-slate-500 font-normal">(021) 5367-8900</div>
+                  <div className="text-[10px] text-slate-500 font-normal tel:08115750260">0811-5750-260</div>
                 </div>
               </a>
             </div>
