@@ -26,6 +26,7 @@ import {
   ActivitySquare,
 } from 'lucide-react';
 import Grainient from './hero-animate/Grainient';
+import Image from 'next/image'
 import SelectDemo, { type SelectOptionItem } from '@/components/shadcn-studio/select/select-10';
 
 interface HeroSectionProps {
@@ -71,7 +72,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative bg-[#0472B5] text-white pt-12 pb-20 font-sans border-b border-slate-200 overflow-hidden">
+    <section className="relative bg-[#0472B5] h-[90vh] text-white pt-12 pb-20 font-sans border-b border-slate-200 overflow-hidden">
       {/* Background GhostFibers Animation */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* <GhostFibers
@@ -89,7 +90,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           className="opacity-70"
         /> */}
 
-        <Grainient
+        {/* <Grainient
           colors={['#012c4a', '#02446d', '#035c93', '#0472B5', '#0a84ce']}
           angle={55}
           flow={0.8}
@@ -110,7 +111,9 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           clickSwirl
           intro
           lightMode={false}
-        />
+        /> */}
+
+        <Image src="/images/bg_hero_vida.jpeg" alt="" width={1920} height={1080} className="w-full h-full object-cover absolute inset-0 z-0 pointer-events-none" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -119,7 +122,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex justify-center mb-4"
+          className="flex justify-center mb-[-70px] sm:mb-28"
         >
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/0 border border-white/0 text-xs text-slate-200">
             {/* <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
@@ -137,11 +140,11 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-center max-w-3xl mx-auto mb-10"
         >
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.15]">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-white/0 font-bold tracking-tight  leading-[1.15]">
             {/* Pelayanan Medis & Kebugaran Terpadu di Kebon Jeruk */}
             Pelayanan Medis Terpadu Untuk Kesehatan Keluarga Anda
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-white/0 font-normal leading-relaxed max-w-2xl mx-auto">
             Solusi kesehatan komprehensif mulai dari konsultasi dokter spesialis, lounge infus vitamin eksklusif, evaluasi gizi klinis, hingga perawatan medis di rumah.
           </p>
         </motion.div>
@@ -271,7 +274,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 max-w-4xl mx-auto"
+          className="mt-12 max-w-4xl mx-auto lg:hidden sm:hidden md:hidden"
         >
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {/* Pill 1 */}
