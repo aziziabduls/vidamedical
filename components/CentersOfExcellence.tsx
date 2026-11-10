@@ -1,7 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SECTION_SELECT_EVENT,
+  getSectionSelectionFromLocation,
+  type SectionSelectDetail,
+} from '@/lib/section-navigation';
 import {
   Heart,
   Sparkles,
@@ -156,6 +161,31 @@ const COE_LIST = [
 
 export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellenceProps) {
   const [selectedCoE, setSelectedCoE] = useState(COE_LIST[0]);
+
+  useEffect(() => {
+    const selectById = (coeId?: string | null) => {
+      if (!coeId) return;
+      const found = COE_LIST.find((item) => item.id === coeId);
+      if (found) setSelectedCoE(found);
+    };
+
+    selectById(getSectionSelectionFromLocation().coe);
+
+    const handleSectionSelect = (event: Event) => {
+      const customEvent = event as CustomEvent<SectionSelectDetail>;
+      selectById(customEvent.detail?.coe);
+    };
+    const handlePopState = () => {
+      selectById(getSectionSelectionFromLocation().coe);
+    };
+
+    window.addEventListener(SECTION_SELECT_EVENT, handleSectionSelect);
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener(SECTION_SELECT_EVENT, handleSectionSelect);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   return (
     <section id="coe" className="py-16 bg-slate-50 font-sans border-b border-slate-200">

@@ -62,7 +62,7 @@ export default function HomePage() {
         <VidaAppSection />
 
         {/* 9. Healthpedia: Edukasi & Artikel Kesehatan Terverifikasi Dokter */}
-        <HealthpediaSection />
+        <HealthpediaSection onOpenBooking={openBooking} />
       </main>
 
       {/* 10. Mega Footer */}

@@ -1,7 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SECTION_SELECT_EVENT,
+  getSectionSelectionFromLocation,
+  type SectionSelectDetail,
+} from '@/lib/section-navigation';
 import {
   Stethoscope,
   TestTube2,
@@ -241,6 +246,32 @@ const CATEGORIES = [
 
 export default function ComprehensiveServices({ onSelectService }: ComprehensiveServicesProps) {
   const [activeCategoryId, setActiveCategoryId] = useState('vidaboost');
+
+  useEffect(() => {
+    const selectById = (layananId?: string | null) => {
+      if (!layananId) return;
+      if (CATEGORIES.some((cat) => cat.id === layananId)) {
+        setActiveCategoryId(layananId);
+      }
+    };
+
+    selectById(getSectionSelectionFromLocation().layanan);
+
+    const handleSectionSelect = (event: Event) => {
+      const customEvent = event as CustomEvent<SectionSelectDetail>;
+      selectById(customEvent.detail?.layanan);
+    };
+    const handlePopState = () => {
+      selectById(getSectionSelectionFromLocation().layanan);
+    };
+
+    window.addEventListener(SECTION_SELECT_EVENT, handleSectionSelect);
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener(SECTION_SELECT_EVENT, handleSectionSelect);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   const activeCategory = CATEGORIES.find((cat) => cat.id === activeCategoryId) || CATEGORIES[0];
 

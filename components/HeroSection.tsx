@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import GhostFibers from './GhostFibers';
+import GhostFibers from './hero-animate/GhostFibers';
 import {
   Search,
   MapPin,
@@ -25,6 +25,8 @@ import {
   HeartPulse,
   ActivitySquare,
 } from 'lucide-react';
+import Grainient from './hero-animate/Grainient';
+import SelectDemo, { type SelectOptionItem } from '@/components/shadcn-studio/select/select-10';
 
 interface HeroSectionProps {
   onOpenBooking: (category?: string, option?: string) => void;
@@ -42,6 +44,11 @@ const CLINICAL_UNITS = [
   'Unit Siaga Homecare Medis',
   'Laboratorium Patologi Klinik & USG',
 ];
+
+const CLINICAL_UNIT_ITEMS: SelectOptionItem[] = CLINICAL_UNITS.map((unit) => ({
+  label: unit,
+  value: unit,
+}));
 
 const QUICK_CHIPS = [
   'VidaBoost Gold',
@@ -67,7 +74,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
     <section className="relative bg-[#0472B5] text-white pt-12 pb-20 font-sans border-b border-slate-200 overflow-hidden">
       {/* Background GhostFibers Animation */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <GhostFibers
+        {/* <GhostFibers
           glowColor="#ffffff"
           lineColor="#ffffff"
           secondaryColor="#cbd5e1"
@@ -80,6 +87,29 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           intro={true}
           mouseInteraction={true}
           className="opacity-70"
+        /> */}
+
+        <Grainient
+          colors={['#012c4a', '#02446d', '#035c93', '#0472B5', '#0a84ce']}
+          angle={55}
+          flow={0.8}
+          silk={0.35}
+          grainAmount={0.00}
+          type="linear"
+          bands={1}
+          softness={1}
+          scale={1}
+          speed={1}
+          grainSize={0.5}
+          grainAnimated
+          contrast={1}
+          saturation={1}
+          variation={0}
+          interactive
+          stir={1}
+          clickSwirl
+          intro
+          lightMode={false}
         />
       </div>
 
@@ -96,7 +126,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
             <span className="font-medium text-amber-300">Vida</span>
             <span className="text-white/40">·</span>
             <span>Medical Centre</span> */}
-            <span className="font-medium text-transparent">Vida</span>
+            <span className="font-medium text-transparent pb-1">Vida</span>
           </div>
         </motion.div>
 
@@ -108,7 +138,8 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           className="text-center max-w-3xl mx-auto mb-10"
         >
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.15]">
-            Pelayanan Medis & Kebugaran Terpadu di Kebon Jeruk
+            {/* Pelayanan Medis & Kebugaran Terpadu di Kebon Jeruk */}
+            Pelayanan Medis Terpadu Untuk Kesehatan Keluarga Anda
           </h1>
           <p className="mt-4 text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto">
             Solusi kesehatan komprehensif mulai dari konsultasi dokter spesialis, lounge infus vitamin eksklusif, evaluasi gizi klinis, hingga perawatan medis di rumah.
@@ -121,7 +152,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-5 sm:p-6 text-slate-800 border border-slate-200/90"
+          className="scroll-mt-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-5 sm:p-6 text-slate-800 border border-slate-200/90"
         >
           {/* Navigation Tabs */}
           <div className="flex border-b border-slate-200 pb-3 mb-5 space-x-3 sm:space-x-4 overflow-x-auto">
@@ -183,23 +214,21 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
 
             {/* Select Unit */}
             <div className="md:col-span-4 relative">
-              <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                Pilih unit layanan
-              </label>
-              <div className="relative">
-                <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <select
-                  value={selectedUnit}
-                  onChange={(e) => setSelectedUnit(e.target.value)}
-                  className="w-full pl-10 pr-7 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:bg-white transition-colors truncate cursor-pointer"
-                >
-                  {CLINICAL_UNITS.map((unit, idx) => (
-                    <option key={idx} value={unit}>
-                      {unit}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <SelectDemo
+                name="clinicalUnit"
+                label="Pilih unit layanan"
+                groupLabel="Poli & Unit Layanan"
+                items={CLINICAL_UNIT_ITEMS}
+                value={selectedUnit}
+                onValueChange={(nextUnit) => {
+                  if (nextUnit) setSelectedUnit(nextUnit);
+                }}
+                startIcon={<MapPin className="w-4 h-4 text-slate-400" />}
+                className="max-w-none space-y-1"
+                labelClassName="block text-[11px] font-semibold leading-normal text-slate-600"
+                triggerClassName="w-full data-[size=default]:h-[42px] px-3.5 bg-slate-50 border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus-visible:border-[#0472B5] focus-visible:ring-1 focus-visible:ring-[#0472B5] data-open:bg-white cursor-pointer"
+                contentClassName="w-auto min-w-(--anchor-width) max-w-[min(92vw,28rem)]"
+              />
             </div>
 
             {/* Submit CTA */}

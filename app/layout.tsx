@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Newsreader, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -8,7 +8,17 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-sans',
 });
 
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600'],
+  variable: '--font-editorial',
+});
+
 export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon/favicon.ico',
+  },
   title: 'Vida Medical Centre | Layanan Medis & Kebugaran Terintegrasi Kebon Jeruk Jakarta',
   description:
     'Vida Medical Centre menyediakan layanan kesehatan modern berstandar internasional di Gedung The Vida, Kebon Jeruk, Jakarta Barat. Layanan unggulan: VidaBoost IV Therapy, MCU VidaHealth, VidaFit Weight Loss, Homecare Medis, dan Konsultasi Dokter Spesialis.',
@@ -49,8 +59,9 @@ export default function RootLayout({
   return (
     <html
       lang="id"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${plusJakartaSans.variable} font-sans antialiased text-slate-800 bg-[#f8fafc]`}
+      className={`${plusJakartaSans.variable} ${newsreader.variable} font-sans antialiased text-slate-800 bg-[#f8fafc] overflow-y-auto no-scrollbar`}
     >
       <body suppressHydrationWarning className="min-h-screen bg-[#f8fafc] flex flex-col font-sans">
         {children}

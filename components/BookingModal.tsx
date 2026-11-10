@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SelectDemo, { type SelectOptionItem } from '@/components/shadcn-studio/select/select-10';
 import {
   X,
   Calendar,
@@ -20,6 +21,55 @@ import {
   HOMECARE_SERVICES,
   VACCINATION_LIST,
 } from '@/lib/clinic-rules';
+
+type ServiceCategory = 'vidaboost' | 'vidahealth' | 'vidafit' | 'homecare' | 'vaksinasi';
+
+const VIDAFIT_OPTIONS: SelectOptionItem[] = [
+  { label: 'Program Evaluasi VidaFit (Dokter Sp.GK)', value: 'Program Evaluasi VidaFit (Dokter Sp.GK)' },
+  {
+    label: 'VidaFit Complete (Meal Plan + InBody + Suplemen BPOM)',
+    value: 'VidaFit Complete (Meal Plan + InBody + Suplemen BPOM)',
+  },
+  {
+    label: 'VidaFit Medical Metabolic Injections Program',
+    value: 'VidaFit Medical Metabolic Injections Program',
+  },
+];
+
+const TIME_SLOT_OPTIONS: SelectOptionItem[] = [
+  { label: '09:00 WIB (Pagi)', value: '09:00 WIB' },
+  { label: '11:00 WIB (Siang)', value: '11:00 WIB' },
+  { label: '14:00 WIB (Siang)', value: '14:00 WIB' },
+  { label: '16:00 WIB (Sore)', value: '16:00 WIB' },
+  { label: '18:30 WIB (Malam)', value: '18:30 WIB' },
+];
+
+function getPackageOptions(cat: ServiceCategory): SelectOptionItem[] {
+  switch (cat) {
+    case 'vidaboost':
+      return VIDA_BOOST_TIERS.map((t) => ({
+        label: `${t.name} (${t.tagline})`,
+        value: t.name,
+      }));
+    case 'vidahealth':
+      return VIDA_HEALTH_PACKAGES.map((p) => ({
+        label: `${p.title} (+ Bonus InBody)`,
+        value: p.title,
+      }));
+    case 'vidafit':
+      return VIDAFIT_OPTIONS;
+    case 'homecare':
+      return HOMECARE_SERVICES.map((h) => ({
+        label: h.title,
+        value: h.title,
+      }));
+    case 'vaksinasi':
+      return VACCINATION_LIST.map((v) => ({
+        label: v.name,
+        value: v.name,
+      }));
+  }
+}
 
 function getDefaultOptionForCategory(cat: string) {
   switch (cat) {
@@ -96,7 +146,15 @@ function BookingModalInner({
     initialOption || getDefaultOptionForCategory(normalizedCategory)
   );
   const [preferredDate, setPreferredDate] = useState(() => getTomorrowDateString());
-  const [preferredTime, setPreferredTime] = useState('10:00 WIB');
+  const [preferredTime, setPreferredTime] = useState('09:00 WIB');
+
+  const packageOptions = useMemo(() => {
+    const baseOptions = getPackageOptions(category);
+    if (option && !baseOptions.some((item) => item.value === option)) {
+      return [{ label: option, value: option }, ...baseOptions];
+    }
+    return baseOptions;
+  }, [category, option]);
   const [visitType, setVisitType] = useState<'clinic' | 'homecare'>(
     normalizedCategory === 'homecare' ? 'homecare' : 'clinic'
   );
@@ -278,54 +336,20 @@ function BookingModalInner({
 
               {/* Specific Option Selector */}
               <div>
-                <label className="font-medium text-slate-700 block mb-1">
-                  Pilihan paket / tindakan
-                </label>
-                <select
+                <SelectDemo
+                  name="serviceOption"
+                  label="Pilihan paket / tindakan"
+                  groupLabel="Pilihan Layanan"
+                  items={packageOptions}
                   value={option}
-                  onChange={(e) => setOption(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white font-normal focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
-                >
-                  {category === 'vidaboost' &&
-                    VIDA_BOOST_TIERS.map((t) => (
-                      <option key={t.id} value={t.name}>
-                        {t.name} ({t.tagline})
-                      </option>
-                    ))}
-
-                  {category === 'vidahealth' &&
-                    VIDA_HEALTH_PACKAGES.map((p) => (
-                      <option key={p.id} value={p.title}>
-                        {p.title} (+ Bonus InBody)
-                      </option>
-                    ))}
-
-                  {category === 'vidafit' && [
-                    <option key="eval" value="Program Evaluasi VidaFit (Dokter Sp.GK)">
-                      Program Evaluasi VidaFit (Dokter Sp.GK)
-                    </option>,
-                    <option key="complete" value="VidaFit Complete (Meal Plan + InBody + Suplemen BPOM)">
-                      VidaFit Complete (Meal Plan + InBody + Suplemen BPOM)
-                    </option>,
-                    <option key="injection" value="VidaFit Medical Metabolic Injections Program">
-                      VidaFit Medical Metabolic Injections Program
-                    </option>,
-                  ]}
-
-                  {category === 'homecare' &&
-                    HOMECARE_SERVICES.map((h) => (
-                      <option key={h.id} value={h.title}>
-                        {h.title}
-                      </option>
-                    ))}
-
-                  {category === 'vaksinasi' &&
-                    VACCINATION_LIST.map((v) => (
-                      <option key={v.id} value={v.name}>
-                        {v.name}
-                      </option>
-                    ))}
-                </select>
+                  onValueChange={(nextOption) => {
+                    if (nextOption) setOption(nextOption);
+                  }}
+                  className="max-w-none space-y-1"
+                  labelClassName="text-xs font-medium leading-normal text-slate-700"
+                  triggerClassName="w-full data-[size=default]:h-9 px-3 rounded-lg border-slate-300 text-slate-900 bg-white text-xs font-normal focus-visible:ring-1 focus-visible:ring-teal-700 focus-visible:border-teal-700 cursor-pointer"
+                  contentClassName="w-auto min-w-(--anchor-width) max-w-[min(92vw,28rem)]"
+                />
               </div>
 
               {/* Location Type */}
@@ -395,20 +419,19 @@ function BookingModalInner({
                 </div>
 
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
-                    Waktu / jam
-                  </label>
-                  <select
+                  <SelectDemo
+                    name="preferredTime"
+                    label="Waktu / jam"
+                    groupLabel="Pilih Jam Kunjungan"
+                    items={TIME_SLOT_OPTIONS}
                     value={preferredTime}
-                    onChange={(e) => setPreferredTime(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white font-medium focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
-                  >
-                    <option value="09:00 WIB">09:00 WIB (Pagi)</option>
-                    <option value="11:00 WIB">11:00 WIB (Siang)</option>
-                    <option value="14:00 WIB">14:00 WIB (Siang)</option>
-                    <option value="16:00 WIB">16:00 WIB (Sore)</option>
-                    <option value="18:30 WIB">18:30 WIB (Malam)</option>
-                  </select>
+                    onValueChange={(nextTime) => {
+                      if (nextTime) setPreferredTime(nextTime);
+                    }}
+                    className="max-w-none space-y-1"
+                    labelClassName="text-xs font-medium leading-normal text-slate-700"
+                    triggerClassName="w-full data-[size=default]:h-9 px-3 rounded-lg border-slate-300 text-slate-900 bg-white text-xs font-medium focus-visible:ring-1 focus-visible:ring-teal-700 focus-visible:border-teal-700 cursor-pointer"
+                  />
                 </div>
               </div>
 
