@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import FeaturedServices from '@/components/FeaturedServices';
-import VidaBoostSection from '@/components/VidaBoostSection';
-import VidaHealthSection from '@/components/VidaHealthSection';
-import VidaFitSection from '@/components/VidaFitSection';
-import HomecareSection from '@/components/HomecareSection';
-import VaccinationSection from '@/components/VaccinationSection';
-import LocationContactSection from '@/components/LocationContactSection';
-import FAQSection from '@/components/FAQSection';
+import VidaStats from '@/components/VidaStats';
+import CentersOfExcellence from '@/components/CentersOfExcellence';
+import ComprehensiveServices from '@/components/ComprehensiveServices';
+import HeartRiskCalculator from '@/components/HeartRiskCalculator';
+import PatientStorySection from '@/components/PatientStorySection';
+import VidaAppSection from '@/components/VidaAppSection';
+import HealthpediaSection from '@/components/HealthpediaSection';
 import Footer from '@/components/Footer';
+import FloatingChat from '@/components/FloatingChat';
 import BookingModal from '@/components/BookingModal';
 
 export default function HomePage() {
@@ -20,50 +20,58 @@ export default function HomePage() {
   const [modalOption, setModalOption] = useState<string>('VidaBoost Gold');
 
   const openBooking = (category?: string, option?: string) => {
-    if (category) setModalCategory(category);
+    if (category) {
+      // Map category alias if needed
+      if (category === 'mcu') setModalCategory('vidahealth');
+      else if (category === 'doctor' || category === 'coe' || category === 'popular' || category === 'story') {
+        setModalCategory('vidafit');
+      } else {
+        setModalCategory(category);
+      }
+    }
     if (option) setModalOption(option);
     setIsModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* Top Navbar */}
-      <Navbar onOpenBooking={() => openBooking('vidaboost', 'VidaBoost Gold')} />
+    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 font-sans selection:bg-[#ffcf00] selection:text-[#1c2674]">
+      {/* 1. Header Navbar (Top Utility + Main Nav + Emergency Hotline) */}
+      <Navbar onOpenBooking={openBooking} />
 
-      {/* Main Page Flow */}
+      {/* Main Content Sections Flow */}
       <main className="flex-1">
-        {/* 1. Hero Section */}
-        <HeroSection onOpenBooking={() => openBooking('vidaboost', 'VidaBoost Gold')} />
+        {/* 2. Hero Section dengan Interactive Doctor Search Widget & 6 Quick Access Pills */}
+        <HeroSection onOpenBooking={openBooking} />
 
-        {/* 2. Overview of 5 Featured Clinical Pillars */}
-        <FeaturedServices onSelectService={(cat, opt) => openBooking(cat, opt)} />
+        {/* 3. Statistics Counter Jaringan Vida Medical Centre di Gedung The Vida */}
+        <VidaStats />
 
-        {/* 3. VidaBoost: Infus Vitamin & IV Therapy */}
-        <VidaBoostSection onSelectTier={(tier) => openBooking('vidaboost', tier)} />
+        {/* 4. Centers of Excellence (8 Pilar Layanan Unggulan Vida) */}
+        <CentersOfExcellence onOpenBooking={openBooking} />
 
-        {/* 4. VidaHealth Package: MCU + Bonus Body Composition InBody */}
-        <VidaHealthSection onSelectPackage={(pkg) => openBooking('vidahealth', pkg)} />
+        {/* 5. Solusi Layanan Menyeluruh (VidaBoost, VidaHealth MCU, Homecare, Lab) */}
+        <ComprehensiveServices onSelectService={(cat, opt) => openBooking(cat, opt)} />
 
-        {/* 5. VidaFit: Weight Loss by Clinical Nutrition Specialist + Interactive BMI Calc */}
-        <VidaFitSection onOpenBooking={(cat, opt) => openBooking(cat, opt)} />
+        {/* 6. Kalkulator Risiko Jantung Interaktif (10-Year Cardiovascular Risk) */}
+        <HeartRiskCalculator onOpenBooking={openBooking} />
 
-        {/* 6. Layanan Homecare: Wound Care, NGT, Kateter Urin, Infus ke Rumah */}
-        <HomecareSection onSelectHomecareService={(srv) => openBooking('homecare', srv)} />
+        {/* 7. Kisah Inspiratif Pasien (#BersamaVida) */}
+        <PatientStorySection onOpenBooking={openBooking} />
 
-        {/* 7. Vaksinasi: VidaShield Influenza Quadrivalent, HPV, dsb */}
-        <VaccinationSection onSelectVaccine={(vac) => openBooking('vaksinasi', vac)} />
+        {/* 8. MyVida Patient Portal & Digital Health App Showcase */}
+        <VidaAppSection />
 
-        {/* 8. Lokasi di Gedung The Vida, Jam Layanan, & WhatsApp Contact */}
-        <LocationContactSection />
-
-        {/* 9. Pertanyaan Pasien (FAQ) */}
-        <FAQSection />
+        {/* 9. Healthpedia: Edukasi & Artikel Kesehatan Terverifikasi Dokter */}
+        <HealthpediaSection />
       </main>
 
-      {/* Footer */}
+      {/* 10. Mega Footer */}
       <Footer />
 
-      {/* Interactive Reservation Wizard Modal */}
+      {/* 11. Floating Action Chat Button */}
+      <FloatingChat onOpenBooking={() => openBooking('vidaboost', 'VidaBoost Gold')} />
+
+      {/* 12. Modal Reservasi Janji Temu */}
       <BookingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

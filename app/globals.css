@@ -1,8 +1,50 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --color-vida-navy: #151e52;
+  --color-vida-navy-light: #1c2674;
+  --color-vida-navy-surface: #202b78;
+  --color-vida-accent: #d97706;
+  --color-vida-gold: #f59e0b;
+  --color-vida-gold-light: #fffbeb;
+  --color-vida-slate-50: #f8fafc;
+  --color-vida-slate-100: #f1f5f9;
+  --color-vida-slate-200: #e2e8f0;
+  --color-vida-slate-300: #cbd5e1;
+  --color-vida-slate-600: #475569;
+  --color-vida-slate-800: #1e293b;
+  --color-vida-slate-900: #0f172a;
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    color: #1e293b;
+    background-color: #f8fafc;
   }
+
+  /* Quiet text selection */
+  ::selection {
+    background-color: #1c2674;
+    color: #ffffff;
+  }
+}
+
+/* Subtle, quiet scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

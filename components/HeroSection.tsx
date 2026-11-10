@@ -1,124 +1,317 @@
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
-import { Calendar, MessageCircle, ShieldCheck, HeartPulse, Clock, Activity, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  Search,
+  MapPin,
+  Calendar,
+  Stethoscope,
+  Building2,
+  Sparkles,
+  Home,
+  TestTube2,
+  Scan,
+  Award,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  Activity,
+  Heart,
+  Clock,
+  Package,
+} from 'lucide-react';
 
 interface HeroSectionProps {
-  onOpenBooking: () => void;
+  onOpenBooking: (category?: string, option?: string) => void;
 }
 
+const CLINICAL_UNITS = [
+  'Semua Poli & Unit Medis',
+  'Poli Spesialis Penyakit Dalam (Sp.PD)',
+  'Poli Spesialis Gizi Klinis (VidaFit Sp.GK)',
+  'Poli Spesialis Jantung & Pembuluh Darah (Sp.JP)',
+  'Poli Spesialis Anak (Sp.A)',
+  'Poli Spesialis Kebidanan & Kandungan (Sp.OG)',
+  'Lounge Infus VidaBoost IV Therapy',
+  'Unit Medical Check Up (VidaHealth MCU)',
+  'Unit Siaga Homecare Medis',
+  'Laboratorium Patologi Klinik & USG',
+];
+
+const QUICK_CHIPS = [
+  'VidaBoost Gold',
+  'Dokter Spesialis Gizi',
+  'MCU Eksekutif',
+  'Homecare Rawat Luka',
+  'Spesialis Jantung',
+  'Vaksin Influenza',
+];
+
 export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
+  const [activeTab, setActiveTab] = useState<'doctor' | 'unit' | 'popular'>('doctor');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUnit, setSelectedUnit] = useState(CLINICAL_UNITS[0]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const query = searchTerm ? `Pencarian: "${searchTerm}"` : selectedUnit;
+    onOpenBooking('doctor', `${query} di Vida Medical Centre`);
+  };
+
   return (
-    <section className="bg-white border-b border-slate-200 py-12 lg:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: Context, Headline, Subtitle, Actions, Facts */}
-          <div className="lg:col-span-7 space-y-6">
-            {/* Context location badge */}
-            <div className="inline-flex items-center gap-2 text-xs text-slate-600 font-medium bg-slate-100 border border-slate-200 px-3 py-1 rounded-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-700" />
-              <span>Gedung The Vida, Lantai Dasar · Kebon Jeruk, Jakarta Barat</span>
-            </div>
+    <section className="relative bg-[#151e52] text-white pt-12 pb-20 font-sans border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Eyebrow Clinical Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex justify-center mb-4"
+        >
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs text-slate-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span className="font-medium text-amber-300">Standar Pelayanan Medis Paripurna</span>
+            <span className="text-white/40">·</span>
+            <span>Gedung The Vida Lt. Ground & Mezzanine</span>
+          </div>
+        </motion.div>
 
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-950 tracking-tight leading-[1.18] text-balance">
-              Layanan medis rawat jalan dan terapi kebugaran terarah di Kebon Jeruk
-            </h1>
+        {/* Hero Title & Value Proposition */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-center max-w-3xl mx-auto mb-10"
+        >
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.15]">
+            Pelayanan Medis & Kebugaran Terpadu di Kebon Jeruk
+          </h1>
+          <p className="mt-4 text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto">
+            Solusi kesehatan komprehensif mulai dari konsultasi dokter spesialis, lounge infus vitamin eksklusif, evaluasi gizi klinis, hingga perawatan medis di rumah.
+          </p>
+        </motion.div>
 
-            {/* Value description */}
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl">
-              Vida Medical Centre memadukan penanganan dokter berpengalaman dengan fasilitas diagnostik modern. Melayani terapi infus vitamin <span className="text-slate-900 font-medium">VidaBoost</span>, paket pemeriksaan berkala <span className="text-slate-900 font-medium">VidaHealth MCU</span> termasuk bonus analisis komposisi tubuh InBody, pendampingan gizi klinis <span className="text-slate-900 font-medium">VidaFit</span>, serta perawat <span className="text-slate-900 font-medium">Homecare</span> langsung ke rumah.
-            </p>
+        {/* INTERACTIVE DOCTOR & CLINICAL SEARCH WIDGET */}
+        <motion.div
+          id="doctor-search"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-5 sm:p-6 text-slate-800 border border-slate-200/90"
+        >
+          {/* Navigation Tabs */}
+          <div className="flex border-b border-slate-200 pb-3 mb-5 space-x-3 sm:space-x-4 overflow-x-auto">
+            <button
+              type="button"
+              onClick={() => setActiveTab('doctor')}
+              className={`flex items-center space-x-2 pb-2 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === 'doctor'
+                ? 'border-[#1c2674] text-[#1c2674] font-semibold'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+            >
+              <Stethoscope className="w-4 h-4 text-[#1c2674]" />
+              <span>Semua Dokter & Jadwal</span>
+            </button>
 
-            {/* Primary Action Buttons */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <button
-                onClick={onOpenBooking}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-xs sm:text-sm font-medium text-white bg-teal-800 rounded-lg hover:bg-teal-900 active:scale-[0.98] transition-all cursor-pointer whitespace-nowrap"
-              >
-                <Calendar className="w-4 h-4" strokeWidth={1.5} />
-                <span>Reservasi jadwal kunjungan</span>
-              </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('unit')}
+              className={`flex items-center space-x-2 pb-2 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === 'unit'
+                ? 'border-[#1c2674] text-[#1c2674] font-semibold'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+            >
+              <Building2 className="w-4 h-4 text-[#1c2674]" />
+              <span>Poli & Unit Spesialis</span>
+            </button>
 
-              <a
-                href="https://wa.me/628115750260?text=Halo%20Vida%20Medical%20Centre,%20saya%20ingin%20berkonsultasi%20mengenai%20layanan%20medis."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-xs sm:text-sm font-normal text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors whitespace-nowrap"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-600" strokeWidth={1.5} />
-                <span>Konsultasi WhatsApp 0811 5750 260</span>
-              </a>
-            </div>
-
-            {/* Proof Points Strip */}
-            <div className="pt-6 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-900 font-medium text-xs">
-                  <ShieldCheck className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
-                  <span>Dokter berlisensi</span>
-                </div>
-                <p className="text-xs text-slate-500 font-normal">Praktik resmi & tersertifikasi</p>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-900 font-medium text-xs">
-                  <HeartPulse className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
-                  <span>Bonus tes InBody</span>
-                </div>
-                <p className="text-xs text-slate-500 font-normal">Gratis pada paket MCU</p>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-900 font-medium text-xs">
-                  <Activity className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
-                  <span>Formula VidaBoost</span>
-                </div>
-                <p className="text-xs text-slate-500 font-normal">Sediaan steril BPOM</p>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-900 font-medium text-xs">
-                  <Clock className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
-                  <span>Homecare standby</span>
-                </div>
-                <p className="text-xs text-slate-500 font-normal">Kunjungan area Jakarta</p>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setActiveTab('popular')}
+              className={`flex items-center space-x-2 pb-2 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === 'popular'
+                ? 'border-[#1c2674] text-[#1c2674] font-semibold'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+            >
+              <Package className="w-4 h-4 text-amber-600" />
+              <span>Paket Populer (VidaBoost / MCU)</span>
+            </button>
           </div>
 
-          {/* Right Column: Hero Visual Asset */}
-          <div className="lg:col-span-5 relative">
-            <div className="rounded-xl overflow-hidden border border-slate-200 bg-white">
-              <div className="relative aspect-[4/3] w-full bg-slate-100">
-                <Image
-                  src="/images/hero_vida_clinic.jpg"
-                  alt="Interior Ruang Konsultasi dan Lounge Vida Medical Centre di Gedung The Vida Jakarta"
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+          {/* Search Form */}
+          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
+            {/* Input Keyword */}
+            <div className="md:col-span-5 relative">
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                Nama dokter, spesialisasi, atau tindakan
+              </label>
+              <div className="relative">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Contoh: dr. Gizi, Infus Vitamin, EKG..."
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#1c2674] focus:bg-white transition-colors"
                 />
               </div>
+            </div>
 
-              {/* Informational baseline ribbon */}
-              <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs">
-                <div>
-                  <span className="font-medium text-slate-900 block">The Vida Building, Kebon Jeruk</span>
-                  <span className="text-slate-500 text-xs">Jl. Raya Perjuangan No. 8, Jakarta Barat</span>
-                </div>
-                <a
-                  href="#lokasi"
-                  className="text-teal-800 hover:text-teal-950 font-medium shrink-0 ml-3 flex items-center gap-1"
+            {/* Select Unit */}
+            <div className="md:col-span-4 relative">
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                Pilih unit layanan
+              </label>
+              <div className="relative">
+                <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  value={selectedUnit}
+                  onChange={(e) => setSelectedUnit(e.target.value)}
+                  className="w-full pl-10 pr-7 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#1c2674] focus:bg-white transition-colors truncate cursor-pointer"
                 >
-                  <MapPin className="w-3 h-3 text-teal-800" strokeWidth={1.5} />
-                  <span>Peta lokasi</span>
-                </a>
+                  {CLINICAL_UNITS.map((unit, idx) => (
+                    <option key={idx} value={unit}>
+                      {unit}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
+
+            {/* Submit CTA */}
+            <div className="md:col-span-3 flex flex-col justify-end">
+              <label className="hidden md:block text-[11px] font-semibold text-transparent mb-1">
+                Action
+              </label>
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#1c2674] hover:bg-[#151e52] text-white font-semibold text-xs sm:text-sm transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-sm"
+              >
+                <Search className="w-4 h-4 text-amber-400" />
+                <span>Cari Layanan</span>
+              </motion.button>
+            </div>
+          </form>
+
+          {/* Quick Popular Chips */}
+          <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
+            <span className="text-slate-400 font-medium mr-1 text-[11px]">Sering dicari:</span>
+            {QUICK_CHIPS.map((chip, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setSearchTerm(chip);
+                  onOpenBooking('popular', `Pencarian: ${chip}`);
+                }}
+                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-[#1c2674] border border-slate-200 transition-colors font-medium text-[11px] cursor-pointer"
+              >
+                {chip}
+              </button>
+            ))}
           </div>
-        </div>
+        </motion.div>
+
+        {/* 6 QUICK ACCESS SERVICE CARDS */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-12 max-w-4xl mx-auto"
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {/* Pill 1 */}
+            <a
+              href="#doctor-search"
+              className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-amber-400 flex items-center justify-center mb-2">
+                <Stethoscope className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                Jadwal Dokter
+              </span>
+              <span className="text-[10px] text-slate-300 mt-0.5">Spesialis & Umum</span>
+            </a>
+
+            {/* Pill 2 */}
+            <button
+              type="button"
+              onClick={() => onOpenBooking('vidaboost', 'VidaBoost IV Therapy')}
+              className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-amber-400 flex items-center justify-center mb-2">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                VidaBoost IV
+              </span>
+              <span className="text-[10px] text-slate-300 mt-0.5">Infus Vitamin</span>
+            </button>
+
+            {/* Pill 3 */}
+            <button
+              type="button"
+              onClick={() => onOpenBooking('vidahealth', 'Paket MCU VidaHealth')}
+              className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-amber-400 flex items-center justify-center mb-2">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                VidaHealth MCU
+              </span>
+              <span className="text-[10px] text-slate-300 mt-0.5">Skrining & InBody</span>
+            </button>
+
+            {/* Pill 4 */}
+            <button
+              type="button"
+              onClick={() => onOpenBooking('homecare', 'Vida at Home (Homecare)')}
+              className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-emerald-400 flex items-center justify-center mb-2">
+                <Home className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                Vida at Home
+              </span>
+              <span className="text-[10px] text-slate-300 mt-0.5">Perawat ke Rumah</span>
+            </button>
+
+            {/* Pill 5 */}
+            <button
+              type="button"
+              onClick={() => onOpenBooking('vidafit', 'VidaFit Weight Management')}
+              className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-amber-400 flex items-center justify-center mb-2">
+                <Activity className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                VidaFit
+              </span>
+              <span className="text-[10px] text-slate-300 mt-0.5">Dokter Gizi Klinis</span>
+            </button>
+
+            {/* Pill 6 */}
+            <button
+              type="button"
+              onClick={() => onOpenBooking('lab', 'Laboratorium & USG')}
+              className="bg-white/10 hover:bg-white/15 rounded-xl p-3.5 text-center flex flex-col items-center justify-center border border-white/10 transition-colors group cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-sky-400 flex items-center justify-center mb-2">
+                <TestTube2 className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+                Laboratorium
+              </span>
+              <span className="text-[10px] text-slate-300 mt-0.5">Tes Darah & USG</span>
+            </button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

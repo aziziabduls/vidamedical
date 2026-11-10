@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
   Calendar,
@@ -141,17 +142,23 @@ function BookingModalInner({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
-      <div className="bg-white rounded-xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden relative">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 8 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+        className="bg-white rounded-xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden relative"
+      >
         {/* Modal Header */}
         <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-teal-800 text-white flex items-center justify-center font-medium text-xs">
+            <div className="w-7 h-7 rounded-md bg-[#1c2674] text-[#ffcf00] flex items-center justify-center font-bold text-xs">
               V
             </div>
             <div>
               <h3 className="text-sm font-semibold text-slate-900 leading-tight">
-                Reservasi jadwal kunjungan
+                Reservasi Jadwal Layanan Medis
               </h3>
               <p className="text-xs text-slate-500 font-normal">
                 Vida Medical Centre · Gedung The Vida & Homecare
@@ -220,9 +227,9 @@ function BookingModalInner({
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 bg-teal-800 hover:bg-teal-900 text-white font-medium text-xs rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow"
                 >
-                  <span>Kirim via WhatsApp (0811 5750 260)</span>
+                  <span>Kirim via WhatsApp Resmi (0811 8951 181)</span>
                   <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.5} />
                 </a>
 
@@ -460,19 +467,19 @@ function BookingModalInner({
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 px-4 bg-teal-800 hover:bg-teal-900 text-white font-medium text-xs sm:text-sm rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 bg-[#ffcf00] hover:bg-[#e5ba00] text-[#1c2674] font-bold text-xs sm:text-sm rounded-xl shadow transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4" strokeWidth={1.5} />
-                  <span>Lanjutkan reservasi ke WhatsApp resmi</span>
+                  <Calendar className="w-4 h-4" strokeWidth={2} />
+                  <span>Lanjutkan Reservasi ke WhatsApp Resmi</span>
                 </button>
                 <p className="text-[11px] text-slate-400 font-normal text-center mt-2">
-                  Staf resepsionis akan mengonfirmasi ketersediaan slot perawat/dokter pada jam kerja.
+                  Staf resepsionis Vida Medical Centre akan mengonfirmasi ketersediaan slot jadwal Anda.
                 </p>
               </div>
             </form>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
