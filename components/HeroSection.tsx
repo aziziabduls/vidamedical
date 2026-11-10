@@ -123,7 +123,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex justify-center mb-[-10px] sm:mb-28"
+          className="flex justify-center mb-[50px] sm:mb-28"
         >
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/0 border border-white/0 text-xs text-slate-200">
             {/* <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
@@ -252,7 +252,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           </form>
 
           {/* Quick Popular Chips */}
-          <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
+          <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs hidden md:flex">
             <span className="text-slate-400 font-medium mr-1 text-[11px]">Sering dicari:</span>
             {QUICK_CHIPS.map((chip, idx) => (
               <button
@@ -275,7 +275,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 max-w-4xl mx-auto lg:hidden sm:hidden md:hidden"
+          className="mt-12 max-w-4xl mx-auto lg:hidden sm:hidden hidden"
         >
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {/* Pill 1 */}
