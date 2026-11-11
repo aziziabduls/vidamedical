@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
   turbopack: {},
+  allowedDevOrigins: ['driver-gush-blip.ngrok-free.dev'],
+  devIndicators: false,
   // Allow access to remote image placeholder.
   images: {
     remotePatterns: [
@@ -13,7 +15,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'picsum.photos',
         port: '',
-        pathname: '/**', // This allows any path under the hostname
+        pathname: '/**',
       },
     ],
   },
@@ -30,10 +32,5 @@ const nextConfig: NextConfig = {
     return config;
   },
 };
-
-module.exports = {
-  allowedDevOrigins: ['driver-gush-blip.ngrok-free.dev'],
-  devIndicators: false
-}
 
 export default nextConfig;
