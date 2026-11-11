@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Newsreader, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
+import { Analytics } from "@vercel/analytics/next";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -65,6 +66,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning className="min-h-screen bg-[#f8fafc] flex flex-col font-sans">
         {children}
+        <Analytics />
       </body>
     </html>
   );

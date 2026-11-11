@@ -13,6 +13,7 @@ import HealthpediaSection from '@/components/HealthpediaSection';
 import Footer from '@/components/Footer';
 import FloatingChat from '@/components/FloatingChat';
 import BookingModal from '@/components/BookingModal';
+import { Analytics } from "@vercel/analytics/next";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,6 +79,8 @@ export default function HomePage() {
         initialCategory={modalCategory}
         initialOption={modalOption}
       />
+
+      <Analytics />
     </div>
   );
 }
