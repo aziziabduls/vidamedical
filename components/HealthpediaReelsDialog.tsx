@@ -478,6 +478,16 @@ export default function HealthpediaReelsDialog({
                     <span>Ditinjau oleh {art.author}</span>
                   </div>
 
+                  {art.imageUrl && (
+                    <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden border border-slate-200/80 bg-slate-100">
+                      <img
+                        src={art.imageUrl}
+                        alt={art.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+
                   {/* Article Body Paragraphs */}
                   <div className="space-y-2.5 text-[13px] sm:text-sm text-slate-700 leading-relaxed">
                     {art.paragraphs.map((paragraph, pIdx) => (

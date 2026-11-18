@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import Link from 'next/link';
+import BookingModal from '@/components/BookingModal';
+import FloatingChat from '@/components/FloatingChat';
+import Footer from '@/components/Footer';
+import HealthpediaReelsDialog from '@/components/HealthpediaReelsDialog';
+import Navbar from '@/components/Navbar';
+import {
+  HEALTHPEDIA_ARTICLES,
+  type HealthpediaArticle,
+} from '@/lib/healthpedia-articles';
 import { motion, MotionConfig } from 'framer-motion';
 import {
   ArrowLeft,
@@ -14,20 +21,14 @@ import {
   Stethoscope,
   UserCheck,
 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import FloatingChat from '@/components/FloatingChat';
-import BookingModal from '@/components/BookingModal';
-import HealthpediaReelsDialog from '@/components/HealthpediaReelsDialog';
-import {
-  HEALTHPEDIA_ARTICLES,
-  type HealthpediaArticle,
-} from '@/lib/healthpedia-articles';
+import Link from 'next/link';
+import { useRef, useState } from 'react';
 
 interface HealthpediaArticleClientProps {
   article: HealthpediaArticle;
   previousArticle: HealthpediaArticle | null;
   nextArticle: HealthpediaArticle | null;
+  allArticles?: HealthpediaArticle[];
 }
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
@@ -36,6 +37,7 @@ export default function HealthpediaArticleClient({
   article,
   previousArticle,
   nextArticle,
+  allArticles = HEALTHPEDIA_ARTICLES,
 }: HealthpediaArticleClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalCategory, setModalCategory] = useState<string>(article.bookingCategory);
@@ -46,7 +48,7 @@ export default function HealthpediaArticleClient({
 
   const articleIndex = Math.max(
     0,
-    HEALTHPEDIA_ARTICLES.findIndex((item) => item.id === article.id)
+    allArticles.findIndex((item) => item.id === article.id)
   );
 
   const openBooking = (category?: string, option?: string) => {
@@ -147,6 +149,16 @@ export default function HealthpediaArticleClient({
                 {/* Main Long-Form Prose Column (65ch) */}
                 <article className="lg:col-span-8 bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-10">
                   <div className="max-w-[65ch] space-y-6">
+                    {article.imageUrl && (
+                      <div className="relative w-full rounded-xl overflow-hidden border border-slate-200/80 bg-slate-100">
+                        <img
+                          src={article.imageUrl}
+                          alt={article.title}
+                          className="w-full object-cover"
+                        />
+                      </div>
+                    )}
+
                     {/* Lead Intro */}
                     <div className="pl-4 border-l-2 border-[#0472B5] space-y-3">
                       {article.paragraphs.map((paragraph, idx) => (
@@ -306,7 +318,7 @@ export default function HealthpediaArticleClient({
           initialOption={modalOption}
         />
         <HealthpediaReelsDialog
-          articles={HEALTHPEDIA_ARTICLES}
+          articles={allArticles}
           dialogRef={reelsDialogRef}
           initialIndex={articleIndex}
           openSignal={openSignal}

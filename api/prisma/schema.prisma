@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Promo {
+  id        String   @id @default(cuid())
+  title     String
+  imageUrl  String
+  imageAlt  String
+  linkUrl   String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ArticleCategory {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String   @unique
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Article {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  category         String
+  title            String
+  snippet          String
+  readTime         String   @default("4 menit baca")
+  author           String
+  authorCredential String?
+  dateLabel        String
+  imageUrl         String?
+  content          Json
+  sections         Json?
+  keyTakeaways     Json
+  clinicalNote     String?
+  bookingCategory  String?
+  bookingOption    String?
+  isPublished      Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Doctor {
+  id            String   @id @default(cuid())
+  name          String
+  poliCode      String
+  poliName      String
+  specialistTag String
+  schedule      String
+  location      String
+  description   String
+  focusAreas    Json
+  isActive      Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ServicePackage {
+  id              String   @id @default(cuid())
+  category        String
+  slug            String   @unique
+  name            String
+  subtitle        String?
+  tagline         String?
+  priceLabel      String?
+  durationMinutes Int?
+  badge           String?
+  description     String
+  features        Json
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

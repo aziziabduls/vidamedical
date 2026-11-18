@@ -12,6 +12,7 @@ export interface HealthpediaArticle {
   authorCredential: string;
   date: string;
   readTime: string;
+  imageUrl?: string;
   keyPoints: string[];
   paragraphs: string[];
   sections: HealthpediaArticleSection[];

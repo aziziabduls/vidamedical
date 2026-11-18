@@ -6,13 +6,17 @@ import { Scale, HeartPulse, Utensils, Shield, Syringe, ArrowRight } from 'lucide
 
 interface VidaFitSectionProps {
   onOpenBooking: (serviceCategory: string, serviceOption: string) => void;
+  showHeader?: boolean;
 }
 
 const DEFAULT_WEIGHT = 75;
 const DEFAULT_HEIGHT = 170;
 const DEFAULT_AGE = 32;
 
-export default function VidaFitSection({ onOpenBooking }: VidaFitSectionProps) {
+export default function VidaFitSection({
+  onOpenBooking,
+  showHeader = true,
+}: VidaFitSectionProps) {
   // Calculator state: string allows input to be fully deleted/cleared
   const [weight, setWeight] = useState<string>(String(DEFAULT_WEIGHT));
   const [height, setHeight] = useState<string>(String(DEFAULT_HEIGHT));
@@ -42,21 +46,29 @@ export default function VidaFitSection({ onOpenBooking }: VidaFitSectionProps) {
   };
 
   return (
-    <section id="vidafit" className="py-16 lg:py-20 bg-white border-b border-slate-200">
+    <section
+      id="vidafit"
+      className={
+        showHeader
+          ? 'py-16 lg:py-20 bg-white border-b border-slate-200'
+          : 'py-12 sm:py-16'
+      }
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
-            <Scale className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-            <span>Manajemen berat badan medis</span>
+        {showHeader && (
+          <div className="max-w-2xl mb-12">
+            <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
+              <Scale className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
+              <span>Manajemen berat badan medis</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
+              VidaFit: Penurunan berat badan bersama Dokter Spesialis Gizi Klinis
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+              Bukan diet ekstrem tanpa dasar ilmiah. Program VidaFit diawasi langsung oleh Dokter Spesialis Gizi Klinis (Sp.GK) untuk menurunkan lemak tubuh dengan tetap mempertahankan massa otot dan metabolisme jangka panjang.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
-            VidaFit: Penurunan berat badan bersama Dokter Spesialis Gizi Klinis
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            Bukan diet ekstrem tanpa dasar ilmiah. Program VidaFit diawasi langsung oleh Dokter Spesialis Gizi Klinis (Sp.GK) untuk menurunkan lemak tubuh dengan tetap mempertahankan massa otot dan metabolisme jangka panjang.
-          </p>
-        </div>
+        )}
 
         {/* 4 Pillars Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">

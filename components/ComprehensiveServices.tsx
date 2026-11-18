@@ -18,8 +18,11 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+import type { ApiServicePackage } from '@/lib/api-client';
+
 interface ComprehensiveServicesProps {
   onSelectService: (category: string, option: string) => void;
+  services?: ApiServicePackage[];
 }
 
 const CATEGORIES = [
@@ -244,8 +247,28 @@ const CATEGORIES = [
   },
 ];
 
-export default function ComprehensiveServices({ onSelectService }: ComprehensiveServicesProps) {
+export default function ComprehensiveServices({
+  onSelectService,
+  services,
+}: ComprehensiveServicesProps) {
   const [activeCategoryId, setActiveCategoryId] = useState('vidaboost');
+
+  const resolvedCategories = CATEGORIES.map((cat) => {
+    if (!services || services.length === 0) return cat;
+    const apiCat = cat.id === 'mcu' ? 'vidahealth' : cat.id;
+    const matched = services.filter((svc) => svc.category === apiCat);
+    if (matched.length === 0) return cat;
+
+    return {
+      ...cat,
+      items: matched.map((svc) => ({
+        name: svc.subtitle ? `${svc.name} (${svc.subtitle})` : svc.name,
+        price: svc.priceLabel || 'Hubungi Klinik',
+        popular: Boolean(svc.badge),
+        features: Array.isArray(svc.features) ? svc.features : [],
+      })),
+    };
+  });
 
   useEffect(() => {
     const selectById = (layananId?: string | null) => {
@@ -273,7 +296,8 @@ export default function ComprehensiveServices({ onSelectService }: Comprehensive
     };
   }, []);
 
-  const activeCategory = CATEGORIES.find((cat) => cat.id === activeCategoryId) || CATEGORIES[0];
+  const activeCategory =
+    resolvedCategories.find((cat) => cat.id === activeCategoryId) || resolvedCategories[0];
 
   return (
     <section id="comprehensive-services" className="py-16 bg-white font-sans border-b border-slate-200">

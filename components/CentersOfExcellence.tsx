@@ -7,25 +7,16 @@ import {
   getSectionSelectionFromLocation,
   type SectionSelectDetail,
 } from '@/lib/section-navigation';
+import type { ApiServicePackage } from '@/lib/api-client';
 import {
-  Heart,
-  Sparkles,
-  Activity,
-  Baby,
-  Stethoscope,
   ChevronRight,
-  ShieldCheck,
   CheckCircle2,
   Calendar,
-  Syringe,
-  Home,
-  TestTube2,
-  Clock,
-  ArrowRight,
 } from 'lucide-react';
 
 interface CentersOfExcellenceProps {
   onOpenBooking: (category: string, option: string) => void;
+  services?: ApiServicePackage[];
 }
 
 const COE_LIST = [
@@ -159,14 +150,34 @@ const COE_LIST = [
   },
 ];
 
-export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellenceProps) {
-  const [selectedCoE, setSelectedCoE] = useState(COE_LIST[0]);
+export default function CentersOfExcellence({ onOpenBooking, services }: CentersOfExcellenceProps) {
+  const apiCoeList = React.useMemo(() => {
+    const coeServices = (services ?? [])
+      .filter((svc) => svc.category === 'coe')
+      .sort((a, b) => a.sortOrder - b.sortOrder);
+
+    if (coeServices.length === 0) return COE_LIST;
+
+    return coeServices.map((svc) => ({
+      id: svc.slug.replace(/^coe-/, ''),
+      title: svc.name,
+      category: svc.subtitle || 'Pusat Layanan Unggulan',
+      badge: svc.badge || 'Layanan Unggulan',
+      stats: svc.tagline || 'Layanan Klinis Terintegrasi',
+      description: svc.description,
+      procedures: Array.isArray(svc.features) ? svc.features : [],
+      location: svc.priceLabel || 'Gedung The Vida, Kebon Jeruk',
+    }));
+  }, [services]);
+
+  const [selectedId, setSelectedId] = useState(apiCoeList[0]?.id ?? 'vidaboost');
+  const selectedCoE = apiCoeList.find((item) => item.id === selectedId) ?? apiCoeList[0];
 
   useEffect(() => {
     const selectById = (coeId?: string | null) => {
       if (!coeId) return;
-      const found = COE_LIST.find((item) => item.id === coeId);
-      if (found) setSelectedCoE(found);
+      const found = apiCoeList.find((item) => item.id === coeId);
+      if (found) setSelectedId(found.id);
     };
 
     selectById(getSectionSelectionFromLocation().coe);
@@ -185,7 +196,7 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
       window.removeEventListener(SECTION_SELECT_EVENT, handleSectionSelect);
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [apiCoeList]);
 
   return (
     <section id="coe" className="py-16 bg-slate-50 font-sans border-b border-slate-200">
@@ -208,13 +219,13 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left: Quick Pillar Navigator List */}
           <div className="lg:col-span-5 space-y-2">
-            {COE_LIST.map((coe) => {
+            {apiCoeList.map((coe) => {
               const isSelected = selectedCoE.id === coe.id;
               return (
                 <button
                   key={coe.id}
                   type="button"
-                  onClick={() => setSelectedCoE(coe)}
+                  onClick={() => setSelectedId(coe.id)}
                   className={`w-full text-left p-4 rounded-xl border transition-colors cursor-pointer flex items-center justify-between ${isSelected
                       ? 'bg-white border-[#0472B5] shadow-sm ring-1 ring-[#0472B5]/15'
                       : 'bg-white/60 border-slate-200 hover:bg-white hover:border-slate-300'

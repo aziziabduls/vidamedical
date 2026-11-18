@@ -6,22 +6,33 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
   turbopack: {},
-  // Allow access to remote image placeholder.
+  allowedDevOrigins: ['driver-gush-blip.ngrok-free.dev'],
+  devIndicators: false,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'picsum.photos',
         port: '',
-        pathname: '/**', // This allows any path under the hostname
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3350',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '3350',
+        pathname: '/uploads/**',
       },
     ],
   },
   output: 'standalone',
   transpilePackages: ['motion'],
   webpack: (config, { dev }) => {
-    // HMR is disabled in AI Studio via DISABLE_HMR env var.
-    // Do not modify—file watching is disabled to prevent flickering during agent edits.
     if (dev && process.env.DISABLE_HMR === 'true') {
       config.watchOptions = {
         ignored: /.*/,
@@ -30,10 +41,5 @@ const nextConfig: NextConfig = {
     return config;
   },
 };
-
-module.exports = {
-  allowedDevOrigins: ['driver-gush-blip.ngrok-free.dev'],
-  devIndicators: false
-}
 
 export default nextConfig;

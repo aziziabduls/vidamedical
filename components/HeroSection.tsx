@@ -28,42 +28,36 @@ import {
 import Grainient from './hero-animate/Grainient';
 import Image from 'next/image'
 import SelectDemo, { type SelectOptionItem } from '@/components/shadcn-studio/select/select-10';
+import { FALLBACK_DOCTORS, type ApiDoctor } from '@/lib/api-client';
 
 interface HeroSectionProps {
   onOpenBooking: (category?: string, option?: string) => void;
+  doctors?: ApiDoctor[];
 }
 
-const CLINICAL_UNITS = [
-  'Semua Poli & Unit Medis',
-  'Poli Spesialis Penyakit Dalam (Sp.PD)',
-  'Poli Spesialis Gizi Klinis (VidaFit Sp.GK)',
-  'Poli Spesialis Jantung & Pembuluh Darah (Sp.JP)',
-  'Poli Spesialis Anak (Sp.A)',
-  'Poli Spesialis Kebidanan & Kandungan (Sp.OG)',
-  'Lounge Infus VidaBoost IV Therapy',
-  'Unit Medical Check Up (VidaHealth MCU)',
-  'Unit Siaga Homecare Medis',
-  'Laboratorium Patologi Klinik & USG',
-];
-
-const CLINICAL_UNIT_ITEMS: SelectOptionItem[] = CLINICAL_UNITS.map((unit) => ({
-  label: unit,
-  value: unit,
-}));
-
 const QUICK_CHIPS = [
+  'Poli Penyakit Dalam (Sp.PD)',
+  'Poli Gizi Klinis (Sp.GK)',
   'VidaBoost Gold',
-  'Dokter Spesialis Gizi',
-  'MCU Eksekutif',
-  'Homecare Rawat Luka',
-  'Spesialis Jantung',
-  'Vaksin Influenza',
+  'VidaHealth MCU',
+  'VidaFit',
 ];
 
-export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
+export default function HeroSection({
+  onOpenBooking,
+  doctors = FALLBACK_DOCTORS,
+}: HeroSectionProps) {
+  const clinicalUnits = doctors.length > 0
+    ? doctors.map((doc) => doc.name)
+    : FALLBACK_DOCTORS.map((doc) => doc.name);
+  const clinicalUnitItems: SelectOptionItem[] = clinicalUnits.map((unit) => ({
+    label: unit,
+    value: unit,
+  }));
+
   const [activeTab, setActiveTab] = useState<'doctor' | 'unit' | 'popular'>('doctor');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUnit, setSelectedUnit] = useState(CLINICAL_UNITS[0]);
+  const [selectedUnit, setSelectedUnit] = useState(clinicalUnits[0] ?? '');
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +163,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                 }`}
             >
               <Stethoscope className="w-4 h-4 text-[#0472B5]" />
-              <span>Semua Dokter & Jadwal</span>
+              <span>Dokter Kami &amp; Jadwal</span>
             </button>
 
             <button
@@ -181,7 +175,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                 }`}
             >
               <Building2 className="w-4 h-4 text-[#0472B5]" />
-              <span>Poli & Unit Spesialis</span>
+              <span>Poli Spesialis</span>
             </button>
 
             <button
@@ -193,7 +187,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                 }`}
             >
               <Package className="w-4 h-4 text-amber-600" />
-              <span>Paket Populer (VidaBoost / MCU)</span>
+              <span>Layanan (VidaBoost / Health / Fit)</span>
             </button>
           </div>
 
@@ -202,7 +196,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
             {/* Input Keyword */}
             <div className="md:col-span-5 relative">
               <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                Nama dokter, spesialisasi, atau tindakan
+                Nama dokter, spesialisasi, atau layanan
               </label>
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -210,7 +204,7 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Contoh: dr. Gizi, Infus Vitamin, EKG..."
+                  placeholder="Contoh: Penyakit Dalam, Gizi Klinis, VidaBoost..."
                   className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:bg-white transition-colors"
                 />
               </div>
@@ -220,9 +214,9 @@ export default function HeroSection({ onOpenBooking }: HeroSectionProps) {
             <div className="md:col-span-4 relative">
               <SelectDemo
                 name="clinicalUnit"
-                label="Pilih unit layanan"
-                groupLabel="Poli & Unit Layanan"
-                items={CLINICAL_UNIT_ITEMS}
+                label="Pilih poli spesialis"
+                groupLabel="Poli Spesialis"
+                items={clinicalUnitItems}
                 value={selectedUnit}
                 onValueChange={(nextUnit) => {
                   if (nextUnit) setSelectedUnit(nextUnit);

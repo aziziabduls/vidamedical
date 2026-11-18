@@ -1,30 +1,16 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import {
-  Phone,
-  MapPin,
-  Clock,
-  ShieldCheck,
   ChevronRight,
+  Clock,
+  MapPin,
   MessageCircle,
+  Phone
 } from 'lucide-react';
-import { scrollToHomeHref } from '@/lib/section-navigation';
+import Link from 'next/link';
+import React from 'react';
 
 export default function Footer() {
-  const pathname = usePathname();
-
-  const handleHomeLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
-      return;
-    }
-    if (pathname === '/') {
-      e.preventDefault();
-      scrollToHomeHref(href);
-    }
-  };
 
   return (
     <footer className="bg-[#0472B5] text-slate-300 font-sans border-t border-[#0472B5]/30 pt-14 pb-8">
@@ -33,25 +19,12 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-3.5">
             <div className="flex items-center space-x-2.5">
-              {/* <div className="w-9 h-9 rounded-lg bg-[#0472B5] flex items-center justify-center text-amber-400">
-                <svg viewBox="0 0 40 40" className="w-5 h-5 fill-current">
-                  <path d="M20 3L6 8v12c0 9 6 15 14 17 8-2 14-8 14-17V8L20 3z" fill="#0472B5" />
-                  <path d="M17 11h6v6h6v6h-6v6h-6v-6h-6v-6h6v-6z" fill="#f59e0b" />
-                </svg>
-              </div> */}
               <img src="/images/vida_logo.jpg" alt="Vida Medical Centre" width={40} height={40} className="w-10 h-10 border-[0.1px] border-[#0472B5] rounded-sm shadow-sm transition-transform duration-200 group-hover:scale-[1.02]" />
-              <div>
+              {/* <div>
                 <span className="text-lg font-bold text-white tracking-tight">
                   Vida Medical Centre
-                  {/* <span className="text-amber-400">.</span> */}
-                  {/* <span className="text-[11px] font-semibold text-slate-300 ml-1.5">
-                    Medical Centre
-                  </span> */}
                 </span>
-                {/* <p className="text-[11px] text-slate-400">
-                  Klinik Medis & Kebugaran Terpadu
-                </p> */}
-              </div>
+              </div> */}
             </div>
 
             <p className="text-xs text-slate-200 leading-relaxed max-w-sm">
@@ -77,39 +50,39 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/?coe=vidaboost#coe" onClick={(e) => handleHomeLinkClick(e, '/?coe=vidaboost#coe')} className="hover:text-white transition-colors flex items-center space-x-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-                  <span>VidaBoost IV Therapy (Silver, Gold, Plat)</span>
+                <Link href="/layanan/vidaboost" className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+                  <span>VidaBoost IV Therapy (Silver, Gold, Plat, Diamond)</span>
                 </Link>
               </li>
               <li>
-                <Link href="/?coe=vidafit#coe" onClick={(e) => handleHomeLinkClick(e, '/?coe=vidafit#coe')} className="hover:text-white transition-colors flex items-center space-x-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-                  <span>VidaFit Weight Management & Gizi</span>
+                <Link href="/layanan/vidafit" className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+                  <span>VidaFit Weight Management &amp; Gizi</span>
                 </Link>
               </li>
               <li>
-                <Link href="/?layanan=mcu#comprehensive-services" onClick={(e) => handleHomeLinkClick(e, '/?layanan=mcu#comprehensive-services')} className="hover:text-white transition-colors flex items-center space-x-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/layanan/vidahealth" className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
                   <span>Medical Check Up (VidaHealth MCU)</span>
                 </Link>
               </li>
               <li>
-                <Link href="/?layanan=homecare#comprehensive-services" onClick={(e) => handleHomeLinkClick(e, '/?layanan=homecare#comprehensive-services')} className="hover:text-white transition-colors flex items-center space-x-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/layanan?layanan=homecare#comprehensive-services" className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
                   <span>Vida at Home (Homecare Rawat Luka)</span>
                 </Link>
               </li>
               <li>
-                <Link href="/#heart-calculator" onClick={(e) => handleHomeLinkClick(e, '/#heart-calculator')} className="hover:text-white transition-colors flex items-center space-x-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/kalkulator-jantung" className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
                   <span>Kalkulator Risiko Jantung 10 Tahun</span>
                 </Link>
               </li>
               <li>
-                <Link href="/?coe=vaksinasi#coe" onClick={(e) => handleHomeLinkClick(e, '/?coe=vaksinasi#coe')} className="hover:text-white transition-colors flex items-center space-x-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-                  <span>VidaShield Imunisasi & Vaksinasi</span>
+                <Link href="/layanan?coe=vaksinasi#coe" className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+                  <span>VidaShield Imunisasi &amp; Vaksinasi</span>
                 </Link>
               </li>
             </ul>
@@ -122,34 +95,29 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/#doctor-search" onClick={(e) => handleHomeLinkClick(e, '/#doctor-search')} className="hover:text-white transition-colors">
-                  Jadwal Praktik Dokter
+                <Link href="/dokter-kami" className="hover:text-white transition-colors">
+                  Dokter Kami
                 </Link>
               </li>
               <li>
-                <Link href="/#vida-app" onClick={(e) => handleHomeLinkClick(e, '/#vida-app')} className="hover:text-white transition-colors">
-                  MyVida Patient Portal
+                <Link href="/dokter-kami#sp-pd" className="hover:text-white transition-colors">
+                  Poli Penyakit Dalam (Sp.PD)
                 </Link>
               </li>
-              {/* <li>
-                <Link href="/#patient-story" className="hover:text-white transition-colors">
-                  Kisah Pasien (#BersamaVida)
+              <li>
+                <Link href="/dokter-kami#sp-gk" className="hover:text-white transition-colors">
+                  Poli Gizi Klinis (Sp.GK)
                 </Link>
-              </li> */}
+              </li>
+              <li>
+                <Link href="/layanan" className="hover:text-white transition-colors">
+                  Layanan Kami
+                </Link>
+              </li>
               <li>
                 <Link href="/artikel" className="hover:text-white transition-colors">
-                  Healthpedia Artikel Medis
+                  Artikel
                 </Link>
-              </li>
-              {/* <li>
-                <a href="#comprehensive-services" className="hover:text-white transition-colors">
-                  Mitra Asuransi & Rekanan
-                </a>
-              </li> */}
-              <li>
-                <a href="https://wa.me/628115750260" className="hover:text-white transition-colors">
-                  Kerjasama MCU Korporasi
-                </a>
               </li>
             </ul>
           </div>

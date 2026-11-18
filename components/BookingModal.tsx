@@ -1,26 +1,26 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import SelectDemo, { type SelectOptionItem } from '@/components/shadcn-studio/select/select-10';
-import {
-  X,
-  Calendar,
-  Clock,
-  User,
-  Phone,
-  MapPin,
-  Check,
-  ExternalLink,
-} from 'lucide-react';
 import {
   type BookingPayload,
   formatWhatsAppBookingUrl,
-  VIDA_BOOST_TIERS,
-  VIDA_HEALTH_PACKAGES,
   HOMECARE_SERVICES,
   VACCINATION_LIST,
+  VIDA_BOOST_TIERS,
+  VIDA_HEALTH_PACKAGES,
 } from '@/lib/clinic-rules';
+import { motion } from 'framer-motion';
+import {
+  Calendar,
+  Check,
+  Clock,
+  ExternalLink,
+  MapPin,
+  Phone,
+  User,
+  X,
+} from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 
 type ServiceCategory = 'vidaboost' | 'vidahealth' | 'vidafit' | 'homecare' | 'vaksinasi';
 
@@ -211,9 +211,9 @@ function BookingModalInner({
         {/* Modal Header */}
         <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-[#0472B5] text-[#ffcf00] flex items-center justify-center font-bold text-xs">
+            {/* <div className="w-7 h-7 rounded-md bg-[#0472B5] text-[#ffcf00] flex items-center justify-center font-bold text-xs">
               V
-            </div>
+            </div> */}
             <div>
               <h3 className="text-sm font-semibold text-slate-900 leading-tight">
                 Reservasi Jadwal Layanan Medis
@@ -322,11 +322,10 @@ function BookingModalInner({
                       key={cat.id}
                       type="button"
                       onClick={() => handleCategoryChange(cat.id)}
-                      className={`py-1.5 px-2 rounded-md font-medium border transition-colors text-center truncate cursor-pointer ${
-                        category === cat.id
+                      className={`py-1.5 px-2 rounded-md font-medium border transition-colors text-center truncate cursor-pointer ${category === cat.id
                           ? 'border-slate-800 bg-slate-900 text-white'
                           : 'border-slate-200 bg-slate-50 text-slate-600 hover:text-slate-900'
-                      }`}
+                        }`}
                     >
                       {cat.label}
                     </button>
@@ -361,11 +360,10 @@ function BookingModalInner({
                   <button
                     type="button"
                     onClick={() => setVisitType('clinic')}
-                    className={`py-2 px-3 rounded-lg font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
-                      visitType === 'clinic'
+                    className={`py-2 px-3 rounded-lg font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${visitType === 'clinic'
                         ? 'border-slate-800 bg-slate-50 text-slate-900'
                         : 'border-slate-200 bg-white text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <MapPin className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
                     <span className="truncate">Klinik Gedung The Vida</span>
@@ -374,11 +372,10 @@ function BookingModalInner({
                   <button
                     type="button"
                     onClick={() => setVisitType('homecare')}
-                    className={`py-2 px-3 rounded-lg font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
-                      visitType === 'homecare'
+                    className={`py-2 px-3 rounded-lg font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${visitType === 'homecare'
                         ? 'border-slate-800 bg-slate-50 text-slate-900'
                         : 'border-slate-200 bg-white text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <Clock className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
                     <span className="truncate">Homecare ke rumah</span>

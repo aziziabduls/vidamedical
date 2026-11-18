@@ -23,12 +23,20 @@ import BookingModal from '@/components/BookingModal';
 import HealthpediaReelsDialog from '@/components/HealthpediaReelsDialog';
 import {
   HEALTHPEDIA_ARTICLES,
-  HEALTHPEDIA_CATEGORIES,
+  type HealthpediaArticle,
 } from '@/lib/healthpedia-articles';
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
-export default function HealthpediaArchiveClient() {
+interface HealthpediaArchiveClientProps {
+  articles?: HealthpediaArticle[];
+  categories?: string[];
+}
+
+export default function HealthpediaArchiveClient({
+  articles = HEALTHPEDIA_ARTICLES,
+  categories: propCategories,
+}: HealthpediaArchiveClientProps) {
   const [selectedCat, setSelectedCat] = useState<string>('Semua Topik');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -39,6 +47,18 @@ export default function HealthpediaArchiveClient() {
   const [reelsIndex, setReelsIndex] = useState(0);
   const [openSignal, setOpenSignal] = useState(0);
   const reelsDialogRef = useRef<HTMLDialogElement>(null);
+
+  const categories = useMemo(
+    () =>
+      Array.from(
+        new Set([
+          'Semua Topik',
+          ...(propCategories ?? []),
+          ...articles.map((art) => art.category),
+        ])
+      ),
+    [articles, propCategories]
+  );
 
   const openBooking = (category?: string, option?: string) => {
     if (category) {
@@ -54,7 +74,7 @@ export default function HealthpediaArchiveClient() {
   };
 
   const openReelsAtId = (articleId: string) => {
-    const idx = HEALTHPEDIA_ARTICLES.findIndex((art) => art.id === articleId);
+    const idx = articles.findIndex((art) => art.id === articleId);
     setReelsIndex(idx >= 0 ? idx : 0);
     setOpenSignal((prev) => prev + 1);
     reelsDialogRef.current?.showModal();
@@ -62,7 +82,7 @@ export default function HealthpediaArchiveClient() {
 
   const filteredArticles = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    return HEALTHPEDIA_ARTICLES.filter((art) => {
+    return articles.filter((art) => {
       const matchesCat = selectedCat === 'Semua Topik' || art.category === selectedCat;
       if (!matchesCat) return false;
       if (!q) return true;
@@ -73,7 +93,7 @@ export default function HealthpediaArchiveClient() {
         art.author.toLowerCase().includes(q)
       );
     });
-  }, [selectedCat, searchQuery]);
+  }, [articles, selectedCat, searchQuery]);
 
   const showFeaturedSplit = selectedCat === 'Semua Topik' && searchQuery.trim() === '' && filteredArticles.length > 0;
   const featuredArticle = showFeaturedSplit ? filteredArticles[0] : null;
@@ -86,7 +106,7 @@ export default function HealthpediaArchiveClient() {
 
         <main className="flex-1">
           {/* Editorial Header */}
-          <section className="bg-white border-b border-slate-200/80 py-12 sm:py-16">
+          <section className="bg-white border-b border-slate-200 py-10 sm:py-14">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {/* Breadcrumb */}
               <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-500 mb-6">
@@ -109,11 +129,11 @@ export default function HealthpediaArchiveClient() {
                     <span>Pustaka edukasi medis Vida Medical Centre</span>
                   </div>
 
-                  <h1 className="font-editorial text-3xl sm:text-5xl font-medium text-slate-900 tracking-[-0.02em] leading-[1.12] text-balance">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
                     Healthpedia & Jurnal Edukasi Klinis
                   </h1>
 
-                  <p className="mt-4 text-base sm:text-lg text-slate-600 leading-[1.6] max-w-[60ch]">
+                  <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed max-w-[60ch]">
                     Artikel kesehatan berbasis bukti ilmiah yang ditinjau oleh dokter spesialis dan tenaga keperawatan bersertifikat di Kebon Jeruk.
                   </p>
                 </div>
@@ -150,11 +170,11 @@ export default function HealthpediaArchiveClient() {
 
                   <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
                     <span className="tabular-nums">
-                      Menampilkan {filteredArticles.length} dari {HEALTHPEDIA_ARTICLES.length} artikel
+                      Menampilkan {filteredArticles.length} dari {articles.length} artikel
                     </span>
                     <button
                       type="button"
-                      onClick={() => openReelsAtId(filteredArticles[0]?.id ?? HEALTHPEDIA_ARTICLES[0].id)}
+                      onClick={() => openReelsAtId(filteredArticles[0]?.id ?? articles[0]?.id ?? '')}
                       className="inline-flex items-center gap-1.5 font-medium text-[#0472B5] hover:underline cursor-pointer"
                     >
                       <Layers className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -170,7 +190,7 @@ export default function HealthpediaArchiveClient() {
                 aria-label="Filter kategori artikel"
                 className="mt-8 pt-6 border-t border-slate-200/80 flex flex-wrap items-center gap-2"
               >
-                {HEALTHPEDIA_CATEGORIES.map((cat) => {
+                {categories.map((cat) => {
                   const isActive = selectedCat === cat;
                   return (
                     <button
@@ -230,6 +250,16 @@ export default function HealthpediaArchiveClient() {
                             {featuredArticle.title}
                           </Link>
                         </h2>
+
+                        {featuredArticle.imageUrl && (
+                          <div className="mt-4 relative aspect-[16/9] w-full rounded-xl overflow-hidden border border-slate-200/80 bg-slate-100">
+                            <img
+                              src={featuredArticle.imageUrl}
+                              alt={featuredArticle.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
 
                         <p className="mt-4 text-base text-slate-600 leading-[1.65] max-w-[60ch]">
                           {featuredArticle.snippet}
@@ -344,6 +374,15 @@ export default function HealthpediaArchiveClient() {
                         className="group bg-white rounded-2xl border border-slate-200/90 hover:border-[#0472B5]/45 p-6 flex flex-col justify-between transition-colors"
                       >
                         <div>
+                          {art.imageUrl && (
+                            <div className="mb-4 relative aspect-[16/9] w-full rounded-xl overflow-hidden border border-slate-200/80 bg-slate-100">
+                              <img
+                                src={art.imageUrl}
+                                alt={art.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
                           <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 mb-3 tabular-nums">
                             <span className="font-medium text-[#0472B5]">{art.category}</span>
                             <span>{art.date} · {art.readTime}</span>
@@ -421,7 +460,7 @@ export default function HealthpediaArchiveClient() {
           initialOption={modalOption}
         />
         <HealthpediaReelsDialog
-          articles={HEALTHPEDIA_ARTICLES}
+          articles={articles}
           dialogRef={reelsDialogRef}
           initialIndex={reelsIndex}
           openSignal={openSignal}

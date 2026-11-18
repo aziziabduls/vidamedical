@@ -7,27 +7,44 @@ import { Stethoscope, Check, Scale, AlertCircle, ArrowRight } from 'lucide-react
 
 interface VidaHealthSectionProps {
   onSelectPackage: (packageName: string) => void;
+  showHeader?: boolean;
+  packages?: MCUPackage[];
 }
 
-export default function VidaHealthSection({ onSelectPackage }: VidaHealthSectionProps) {
-  const [selectedPackageId, setSelectedPackageId] = useState<string>('comprehensive');
+export default function VidaHealthSection({
+  onSelectPackage,
+  showHeader = true,
+  packages = VIDA_HEALTH_PACKAGES,
+}: VidaHealthSectionProps) {
+  const packageList = packages.length > 0 ? packages : VIDA_HEALTH_PACKAGES;
+  const [selectedPackageId, setSelectedPackageId] = useState<string>(
+    packageList.find((p) => p.id === 'comprehensive')?.id ?? packageList[0]?.id ?? 'comprehensive'
+  );
 
   return (
-    <section id="vidahealth" className="py-16 lg:py-20 bg-slate-50/60 border-b border-slate-200">
+    <section
+      id="vidahealth"
+      className={
+        showHeader
+          ? 'py-16 lg:py-20 bg-slate-50/60 border-b border-slate-200'
+          : 'py-12 sm:py-16'
+      }
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
-            <Stethoscope className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-            <span>Pemeriksaan medis berkala (MCU)</span>
+        {showHeader && (
+          <div className="max-w-2xl mb-12">
+            <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
+              <Stethoscope className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
+              <span>Pemeriksaan medis berkala (MCU)</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
+              VidaHealth Package: Evaluasi klinis organ vital dan metabolisme
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+              Deteksi dini faktor risiko kardiovaskular, diabetes, ginjal, dan sindrom metabolik. Setiap paket sudah mencakup pemeriksaan dokter umum, tes visus mata, uji darah lengkap, dan evaluasi InBody gratis.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
-            VidaHealth Package: Evaluasi klinis organ vital dan metabolisme
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            Deteksi dini faktor risiko kardiovaskular, diabetes, ginjal, dan sindrom metabolik. Setiap paket sudah mencakup pemeriksaan dokter umum, tes visus mata, uji darah lengkap, dan evaluasi InBody gratis.
-          </p>
-        </div>
+        )}
 
         {/* Feature Highlight: Bonus Body Composition Test */}
         <div className="mb-12 bg-slate-950 text-slate-200 rounded-xl p-6 sm:p-8 border border-slate-800">
@@ -75,7 +92,7 @@ export default function VidaHealthSection({ onSelectPackage }: VidaHealthSection
 
         {/* 3 Package Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {VIDA_HEALTH_PACKAGES.map((pkg) => {
+          {packageList.map((pkg) => {
             const isSelected = selectedPackageId === pkg.id;
 
             return (

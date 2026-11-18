@@ -1,34 +1,61 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { VIDA_BOOST_TIERS, type IVTier } from '@/lib/clinic-rules';
 import { Activity, Clock, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface VidaBoostSectionProps {
   onSelectTier: (tierName: string) => void;
+  initialTierId?: string;
+  showHeader?: boolean;
+  tiers?: IVTier[];
 }
 
-export default function VidaBoostSection({ onSelectTier }: VidaBoostSectionProps) {
-  const [activeTierId, setActiveTierId] = useState<string>('gold');
-  const activeTier = VIDA_BOOST_TIERS.find((t) => t.id === activeTierId) || VIDA_BOOST_TIERS[1];
+export default function VidaBoostSection({
+  onSelectTier,
+  initialTierId,
+  showHeader = true,
+  tiers = VIDA_BOOST_TIERS,
+}: VidaBoostSectionProps) {
+  const tierList = tiers.length > 0 ? tiers : VIDA_BOOST_TIERS;
+  const resolveTierId = (tierId?: string) =>
+    tierList.some((t) => t.id === tierId) ? (tierId as IVTier['id']) : (tierList[1]?.id ?? tierList[0].id);
+
+  const [activeTierId, setActiveTierId] = useState<string>(() => resolveTierId(initialTierId));
+
+  useEffect(() => {
+    if (initialTierId && tierList.some((t) => t.id === initialTierId)) {
+      setActiveTierId(initialTierId);
+    }
+  }, [initialTierId, tierList]);
+
+  const activeTier = tierList.find((t) => t.id === activeTierId) || tierList[1] || tierList[0];
 
   return (
-    <section id="vidaboost" className="py-16 lg:py-20 bg-white border-b border-slate-200">
+    <section
+      id="vidaboost"
+      className={
+        showHeader
+          ? 'py-16 lg:py-20 bg-white border-b border-slate-200'
+          : 'py-12 sm:py-16'
+      }
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
-            <Activity className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-            <span>Infus vitamin & terapi intravena</span>
+        {showHeader && (
+          <div className="max-w-2xl mb-12">
+            <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
+              <Activity className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
+              <span>Infus vitamin & terapi intravena</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
+              VidaBoost: Terapi mikronutrien dan hidrasi langsung ke aliran darah
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+              Hantaran multivitamin esensial dan antioksidan murni dengan absorpsi seluler menyeluruh. Tersedia 4 tingkatan formula teruji untuk memulihkan kebugaran fisik Anda.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
-            VidaBoost: Terapi mikronutrien dan hidrasi langsung ke aliran darah
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            Hantaran multivitamin esensial dan antioksidan murni dengan absorpsi seluler menyeluruh. Tersedia 4 tingkatan formula teruji untuk memulihkan kebugaran fisik Anda.
-          </p>
-        </div>
+        )}
 
         {/* 2-Column Clinical Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
@@ -85,7 +112,7 @@ export default function VidaBoostSection({ onSelectTier }: VidaBoostSectionProps
           <div className="lg:col-span-7 space-y-4">
             {/* Tier Selector Tab Strip */}
             <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-lg border border-slate-200/80">
-              {VIDA_BOOST_TIERS.map((tier) => (
+              {tierList.map((tier) => (
                 <button
                   key={tier.id}
                   onClick={() => setActiveTierId(tier.id)}
@@ -166,7 +193,7 @@ export default function VidaBoostSection({ onSelectTier }: VidaBoostSectionProps
 
             {/* Quick 4-tier comparison strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-              {VIDA_BOOST_TIERS.map((tier) => (
+              {tierList.map((tier) => (
                 <div
                   key={tier.id}
                   onClick={() => setActiveTierId(tier.id)}

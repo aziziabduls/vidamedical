@@ -146,7 +146,34 @@ dialog::backdrop {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .healthpedia-reels-track {
+  .healthpedia-reels-track,
+  .promo-carousel-track {
     scroll-behavior: smooth;
   }
+}
+
+.promo-carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  touch-action: manipulation;
+  scrollbar-width: none;
+}
+
+.promo-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.promo-carousel-track > * {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+.promo-carousel-track.is-looping > :first-child {
+  order: clamp(0, var(--current) - (var(--children-count, sibling-count()) - 3), 1);
+}
+
+.promo-carousel-track.is-looping > :last-child {
+  order: calc(-1 * clamp(0, 2 - var(--current), 1));
 }

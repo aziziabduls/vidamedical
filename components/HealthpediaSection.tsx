@@ -7,27 +7,41 @@ import { ArrowUpRight, ChevronRight, UserCheck } from 'lucide-react';
 import HealthpediaReelsDialog from './HealthpediaReelsDialog';
 import {
   HEALTHPEDIA_ARTICLES,
-  HEALTHPEDIA_CATEGORIES,
+  type HealthpediaArticle,
 } from '@/lib/healthpedia-articles';
 
 interface HealthpediaSectionProps {
   onOpenBooking?: (category?: string, option?: string) => void;
+  articles?: HealthpediaArticle[];
+  categories?: string[];
 }
 
-export default function HealthpediaSection({ onOpenBooking }: HealthpediaSectionProps) {
+export default function HealthpediaSection({
+  onOpenBooking,
+  articles = HEALTHPEDIA_ARTICLES,
+  categories: propCategories,
+}: HealthpediaSectionProps) {
   const [selectedCat, setSelectedCat] = useState<string>('Semua Topik');
   const [selectedArticleIndex, setSelectedArticleIndex] = useState(0);
   const [openSignal, setOpenSignal] = useState(0);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  const categories = Array.from(
+    new Set([
+      'Semua Topik',
+      ...(propCategories ?? []),
+      ...articles.map((art) => art.category),
+    ])
+  );
+
   const filteredArticles = (
     selectedCat === 'Semua Topik'
-      ? HEALTHPEDIA_ARTICLES
-      : HEALTHPEDIA_ARTICLES.filter((art) => art.category === selectedCat)
+      ? articles
+      : articles.filter((art) => art.category === selectedCat)
   ).slice(0, 4);
 
   const openReelsById = (articleId: string) => {
-    const idx = HEALTHPEDIA_ARTICLES.findIndex((art) => art.id === articleId);
+    const idx = articles.findIndex((art) => art.id === articleId);
     setSelectedArticleIndex(idx >= 0 ? idx : 0);
     setOpenSignal((prev) => prev + 1);
     dialogRef.current?.showModal();
@@ -61,7 +75,7 @@ export default function HealthpediaSection({ onOpenBooking }: HealthpediaSection
 
         {/* Category Pills */}
         <div className="flex flex-wrap gap-1.5 mb-8">
-          {HEALTHPEDIA_CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               type="button"
@@ -90,29 +104,40 @@ export default function HealthpediaSection({ onOpenBooking }: HealthpediaSection
             {filteredArticles.map((art) => (
               <article
                 key={art.id}
-                className="group relative bg-white rounded-xl p-5 border border-slate-200 hover:border-[#0472B5]/50 hover:shadow-md transition-colors flex flex-col justify-between"
+                className="group relative bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#0472B5]/50 hover:shadow-md transition-colors flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-[11px] font-medium text-slate-500">
-                    {art.category}
-                  </span>
+                  {art.imageUrl && (
+                    <div className="relative aspect-[16/9] w-full bg-slate-100 border-b border-slate-100 overflow-hidden">
+                      <img
+                        src={art.imageUrl}
+                        alt={art.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5 pb-0">
+                    <span className="text-[11px] font-medium text-slate-500">
+                      {art.category}
+                    </span>
 
-                  <h3 className="text-sm font-semibold text-slate-900 group-hover:text-[#0472B5] transition-colors leading-snug mt-2">
-                    <button
-                      type="button"
-                      onClick={() => openReelsById(art.id)}
-                      className="text-left cursor-pointer after:absolute after:inset-0 focus:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#0472B5] focus-visible:after:rounded-xl"
-                    >
-                      {art.title}
-                    </button>
-                  </h3>
+                    <h3 className="text-sm font-semibold text-slate-900 group-hover:text-[#0472B5] transition-colors leading-snug mt-2">
+                      <button
+                        type="button"
+                        onClick={() => openReelsById(art.id)}
+                        className="text-left cursor-pointer after:absolute after:inset-0 focus:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#0472B5] focus-visible:after:rounded-xl"
+                      >
+                        {art.title}
+                      </button>
+                    </h3>
 
-                  <p className="text-xs text-slate-600 mt-2 line-clamp-3 leading-relaxed">
-                    {art.snippet}
-                  </p>
+                    <p className="text-xs text-slate-600 mt-2 line-clamp-3 leading-relaxed">
+                      {art.snippet}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-5 pt-3.5 border-t border-slate-100 text-[11px] text-slate-500 space-y-2">
+                <div className="mt-5 mx-5 mb-5 pt-3.5 border-t border-slate-100 text-[11px] text-slate-500 space-y-2">
                   <div className="flex items-center space-x-1.5 font-medium text-slate-700">
                     <UserCheck className="w-3.5 h-3.5 text-[#0472B5]" />
                     <span>Ditinjau: {art.author}</span>
@@ -134,7 +159,7 @@ export default function HealthpediaSection({ onOpenBooking }: HealthpediaSection
 
       {/* Reels-style Modal Dialog Reader */}
       <HealthpediaReelsDialog
-        articles={HEALTHPEDIA_ARTICLES}
+        articles={articles}
         dialogRef={dialogRef}
         initialIndex={selectedArticleIndex}
         openSignal={openSignal}
