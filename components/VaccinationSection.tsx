@@ -1,8 +1,16 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { VACCINATION_LIST } from '@/lib/clinic-rules';
 import { Shield, Check, Info, ArrowRight } from 'lucide-react';
+import {
+  fadeUpVariants,
+  staggerContainerVariants,
+  staggerItemVariants,
+  TRANSITIONS,
+  VIEWPORT_ONCE,
+} from '@/lib/motion';
 
 interface VaccinationSectionProps {
   onSelectVaccine: (vaccineName: string) => void;
@@ -10,110 +18,117 @@ interface VaccinationSectionProps {
 
 export default function VaccinationSection({ onSelectVaccine }: VaccinationSectionProps) {
   return (
-    <section id="vaksinasi" className="py-16 lg:py-20 bg-white border-b border-slate-200">
+    <section id="vaksinasi" className="py-12 sm:py-16 bg-[#F6F9FC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
-            <Shield className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-            <span>Imunisasi & pencegahan infeksi</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
-            Vaksinasi VidaShield: Perlindungan daya tahan untuk dewasa dan keluarga
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            Dikelola dengan sistem rantai dingin (cold chain) terstandar farmasi medis untuk menjamin potensi vaksin selalu terjaga optimal saat diinjeksikan.
-          </p>
-        </div>
-
         {/* Featured Card for VidaShield Influenza */}
-        <div className="mb-8 bg-slate-50/70 rounded-xl border border-slate-200 p-6 sm:p-7">
+        <motion.div
+          variants={fadeUpVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="mb-8 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_2px_rgba(11,37,69,0.04)] p-6 sm:p-8"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <div className="lg:col-span-8 space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-teal-800 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded">
-                  Rekomendasi musim ini
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="text-xs font-medium text-[#0472B5] bg-[#EBF4FB] border border-[#0472B5]/15 px-2.5 py-0.5 rounded-md">
+                  Rekomendasi Tahunan
                 </span>
-                <span className="text-xs text-slate-500 font-normal">Strain 4-valen WHO</span>
+                <span className="text-xs text-slate-500">Strain 4-valen WHO</span>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900">
+              <h2 className="text-xl sm:text-2xl font-semibold text-[#0B2545] tracking-tight">
                 VidaShield Influenza Quadrivalent (4-Valen)
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                Memberikan proteksi terhadap 4 strain virus influenza aktif (2 subtipe Influenza A dan 2 subtipe Influenza B). Mengurangi risiko komplikasi radang paru dan absen kerja berkepanjangan.
+              </h2>
+              <p className="text-sm text-slate-600 leading-relaxed max-w-2xl">
+                Memberikan proteksi terhadap 4 strain virus influenza aktif (2 subtipe Influenza A dan 2 subtipe Influenza B) untuk mengurangi risiko komplikasi saluran pernapasan.
               </p>
               <div className="flex flex-wrap gap-4 text-xs text-slate-700 pt-1">
-                <span className="flex items-center gap-1.5 font-normal">
-                  <Check className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-[#0472B5]" strokeWidth={1.5} />
                   <span>Dosis 1x per tahun</span>
                 </span>
-                <span className="flex items-center gap-1.5 font-normal">
-                  <Check className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-[#0472B5]" strokeWidth={1.5} />
                   <span>Dewasa, lansia, dan anak usia &gt;6 bulan</span>
                 </span>
-                <span className="flex items-center gap-1.5 font-normal">
-                  <Check className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-                  <span>Tersedia di klinik atau homecare</span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-[#0472B5]" strokeWidth={1.5} />
+                  <span>Tersedia di klinik atau home care</span>
                 </span>
               </div>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col justify-center items-start lg:items-end gap-2.5 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200">
-              <button
+            <div className="lg:col-span-4 flex flex-col justify-center items-start lg:items-end gap-2.5 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100">
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                transition={TRANSITIONS.fast}
+                type="button"
                 onClick={() => onSelectVaccine('VidaShield Influenza Quadrivalent')}
-                className="w-full lg:w-auto px-5 py-2.5 bg-teal-800 hover:bg-teal-900 text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+                className="w-full lg:w-auto px-6 py-3 bg-[#0472B5] hover:bg-[#035c93] text-white text-sm font-medium rounded-full transition-colors flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap shadow-xs"
               >
-                <span>Jadwalkan vaksin influenza</span>
-                <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-              </button>
-              <span className="text-[11px] text-slate-500 font-normal text-center lg:text-right">
-                Skrining kesehatan fisik singkat oleh dokter sebelum injeksi
+                <span>Jadwalkan Vaksin Influenza</span>
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </motion.button>
+              <span className="text-xs text-slate-500 text-center lg:text-right">
+                Termasuk skrining kelayakan fisik oleh dokter sebelum injeksi
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Other Vaccines Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <motion.div
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+        >
           {VACCINATION_LIST.filter((v) => v.id !== 'influenza').map((vac) => (
-            <div
+            <motion.div
               key={vac.id}
-              className="bg-white p-5 rounded-xl border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-colors"
+              variants={staggerItemVariants}
+              className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-[0_1px_2px_rgba(11,37,69,0.04)] flex flex-col justify-between hover:border-[#0472B5]/35 transition-colors"
             >
               <div>
-                <span className="text-[11px] font-normal text-slate-500 block mb-1">
-                  {vac.type}
-                </span>
-                <h4 className="text-sm font-semibold text-slate-900 mb-1.5">{vac.name}</h4>
-                <p className="text-xs text-slate-600 font-normal leading-relaxed mb-4">{vac.protection}</p>
-                <div className="p-2.5 bg-slate-50 rounded border border-slate-100 text-xs text-slate-600 font-normal mb-4">
-                  <span className="font-medium block text-slate-800 mb-0.5">Jadwal pemberian:</span>
+                <div className="flex items-center gap-2 text-xs text-[#0472B5] font-medium mb-2">
+                  <Shield className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                  <span>{vac.type}</span>
+                </div>
+                <h3 className="text-base font-semibold text-[#0B2545] mb-2">{vac.name}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">{vac.protection}</p>
+                <div className="p-3 bg-[#F6F9FC] rounded-xl border border-slate-200/70 text-xs text-slate-600 mb-5">
+                  <span className="font-medium block text-[#0B2545] mb-0.5">Jadwal pemberian</span>
                   <span>{vac.frequency}</span>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100">
-                <button
+              <div className="pt-4 border-t border-slate-100">
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
+                  type="button"
                   onClick={() => onSelectVaccine(vac.name)}
-                  className="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full py-2.5 px-4 bg-[#EBF4FB] hover:bg-[#0472B5] text-[#0472B5] hover:text-white text-xs font-medium rounded-full transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <span>Pesan {vac.name.split(' ')[0]}</span>
-                  <ArrowRight className="w-3 h-3" strokeWidth={1.5} />
-                </button>
+                  <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Corporate / Community Vaccination Info */}
-        <div className="bg-slate-50/70 p-5 rounded-xl border border-slate-200 flex items-start gap-3">
-          <Info className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" strokeWidth={1.5} />
-          <div className="text-xs text-slate-600 font-normal leading-relaxed space-y-0.5">
-            <span className="font-medium text-slate-900 block">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-lg bg-[#EBF4FB] text-[#0472B5] flex items-center justify-center shrink-0 mt-0.5">
+            <Info className="w-4 h-4" strokeWidth={1.5} />
+          </div>
+          <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-1">
+            <span className="font-medium text-[#0B2545] block">
               Layanan vaksinasi on-site korporasi & komunitas
             </span>
             <p>
-              Vida Medical Centre melayani vaksinasi kolektif untuk perkantoran, instansi, dan keluarga di wilayah DKI Jakarta dengan membawa tim perawat berlisensi dan kotak pendingin vaksin berstandar medis.
+              Vida Medical Centre melayani vaksinasi kolektif untuk perkantoran, instansi, dan keluarga di wilayah DKI Jakarta dengan sistem rantai dingin (cold chain) terstandar farmasi medis.
             </p>
           </div>
         </div>

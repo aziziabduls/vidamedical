@@ -2,7 +2,7 @@
 
 import React, { useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -16,10 +16,7 @@ import {
   UserCheck,
   X,
 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import FloatingChat from '@/components/FloatingChat';
-import BookingModal from '@/components/BookingModal';
+import { useBooking } from '@/components/BookingProvider';
 import HealthpediaReelsDialog from '@/components/HealthpediaReelsDialog';
 import {
   HEALTHPEDIA_ARTICLES,
@@ -29,29 +26,13 @@ import {
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export default function HealthpediaArchiveClient() {
+  const { openBooking } = useBooking();
   const [selectedCat, setSelectedCat] = useState<string>('Semua Topik');
   const [searchQuery, setSearchQuery] = useState('');
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalCategory, setModalCategory] = useState<string>('vidaboost');
-  const [modalOption, setModalOption] = useState<string>('VidaBoost Gold');
 
   const [reelsIndex, setReelsIndex] = useState(0);
   const [openSignal, setOpenSignal] = useState(0);
   const reelsDialogRef = useRef<HTMLDialogElement>(null);
-
-  const openBooking = (category?: string, option?: string) => {
-    if (category) {
-      if (category === 'mcu') setModalCategory('vidahealth');
-      else if (category === 'doctor' || category === 'coe' || category === 'popular' || category === 'story') {
-        setModalCategory('vidafit');
-      } else {
-        setModalCategory(category);
-      }
-    }
-    if (option) setModalOption(option);
-    setIsModalOpen(true);
-  };
 
   const openReelsAtId = (articleId: string) => {
     const idx = HEALTHPEDIA_ARTICLES.findIndex((art) => art.id === articleId);
@@ -80,11 +61,7 @@ export default function HealthpediaArchiveClient() {
   const archiveArticles = showFeaturedSplit ? filteredArticles.slice(1) : filteredArticles;
 
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 font-sans selection:bg-[#0472B5] selection:text-white">
-        <Navbar onOpenBooking={openBooking} />
-
-        <main className="flex-1">
+    <main className="flex-1 bg-[#F6F9FC]">
           {/* Editorial Header */}
           <section className="bg-white border-b border-slate-200/80 py-12 sm:py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -410,25 +387,14 @@ export default function HealthpediaArchiveClient() {
               </div>
             </div>
           </section>
-        </main>
-
-        <Footer />
-        <FloatingChat onOpenBooking={() => openBooking('vidaboost', 'VidaBoost Gold')} />
-        <BookingModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          initialCategory={modalCategory}
-          initialOption={modalOption}
-        />
-        <HealthpediaReelsDialog
-          articles={HEALTHPEDIA_ARTICLES}
-          dialogRef={reelsDialogRef}
-          initialIndex={reelsIndex}
-          openSignal={openSignal}
-          onConsult={openBooking}
-        />
-      </div>
-    </MotionConfig>
+      <HealthpediaReelsDialog
+        articles={HEALTHPEDIA_ARTICLES}
+        dialogRef={reelsDialogRef}
+        initialIndex={reelsIndex}
+        openSignal={openSignal}
+        onConsult={openBooking}
+      />
+    </main>
   );
 }
 

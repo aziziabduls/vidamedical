@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion, MotionConfig } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,10 +14,7 @@ import {
   Stethoscope,
   UserCheck,
 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import FloatingChat from '@/components/FloatingChat';
-import BookingModal from '@/components/BookingModal';
+import { useBooking } from '@/components/BookingProvider';
 import HealthpediaReelsDialog from '@/components/HealthpediaReelsDialog';
 import {
   HEALTHPEDIA_ARTICLES,
@@ -37,9 +34,7 @@ export default function HealthpediaArticleClient({
   previousArticle,
   nextArticle,
 }: HealthpediaArticleClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalCategory, setModalCategory] = useState<string>(article.bookingCategory);
-  const [modalOption, setModalOption] = useState<string>(article.bookingOption);
+  const { openBooking } = useBooking();
 
   const [openSignal, setOpenSignal] = useState(0);
   const reelsDialogRef = useRef<HTMLDialogElement>(null);
@@ -49,30 +44,13 @@ export default function HealthpediaArticleClient({
     HEALTHPEDIA_ARTICLES.findIndex((item) => item.id === article.id)
   );
 
-  const openBooking = (category?: string, option?: string) => {
-    if (category) {
-      if (category === 'mcu') setModalCategory('vidahealth');
-      else if (category === 'doctor' || category === 'coe' || category === 'popular' || category === 'story') {
-        setModalCategory('vidafit');
-      } else {
-        setModalCategory(category);
-      }
-    }
-    if (option) setModalOption(option);
-    setIsModalOpen(true);
-  };
-
   const openReelsAtCurrent = () => {
     setOpenSignal((prev) => prev + 1);
     reelsDialogRef.current?.showModal();
   };
 
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 font-sans selection:bg-[#0472B5] selection:text-white">
-        <Navbar onOpenBooking={openBooking} />
-
-        <main className="flex-1">
+    <main className="flex-1 bg-[#F6F9FC]">
           {/* Article Editorial Header */}
           <header className="bg-white border-b border-slate-200/80 py-10 sm:py-14">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -295,25 +273,14 @@ export default function HealthpediaArticleClient({
               </div>
             </div>
           </div>
-        </main>
-
-        <Footer />
-        <FloatingChat onOpenBooking={() => openBooking('vidaboost', 'VidaBoost Gold')} />
-        <BookingModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          initialCategory={modalCategory}
-          initialOption={modalOption}
-        />
-        <HealthpediaReelsDialog
-          articles={HEALTHPEDIA_ARTICLES}
-          dialogRef={reelsDialogRef}
-          initialIndex={articleIndex}
-          openSignal={openSignal}
-          onConsult={openBooking}
-        />
-      </div>
-    </MotionConfig>
+      <HealthpediaReelsDialog
+        articles={HEALTHPEDIA_ARTICLES}
+        dialogRef={reelsDialogRef}
+        initialIndex={articleIndex}
+        openSignal={openSignal}
+        onConsult={openBooking}
+      />
+    </main>
   );
 }
 

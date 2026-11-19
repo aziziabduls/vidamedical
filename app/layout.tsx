@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { Newsreader, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from '@vercel/analytics/next';
+import BookingProvider from '@/components/BookingProvider';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   display: 'swap',
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
 });
 
@@ -20,26 +22,23 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon/favicon.ico',
   },
-  title: 'Vida Medical Centre | Layanan Medis & Kebugaran Terintegrasi Kebon Jeruk Jakarta',
+  title: 'Vida Medical Centre | Layanan Medis & Kebugaran Terpadu Kebon Jeruk Jakarta',
   description:
-    'Vida Medical Centre menyediakan layanan kesehatan modern berstandar internasional di Gedung The Vida, Kebon Jeruk, Jakarta Barat. Layanan unggulan: VidaBoost IV Therapy, MCU VidaHealth, VidaFit Weight Loss, Homecare Medis, dan Konsultasi Dokter Spesialis.',
+    'Vida Medical Centre menyediakan layanan kesehatan modern berstandar klinis di Gedung The Vida, Kebon Jeruk, Jakarta Barat. Layanan unggulan: Vaksinasi, Medical Check Up, Vitamin Booster (VidaBoost), dan Home Care.',
   keywords: [
     'Vida Medical Centre',
     'Klinik Kebon Jeruk',
     'Gedung The Vida Jakarta',
-    'VidaBoost IV Therapy',
-    'VidaHealth MCU',
-    'VidaFit Weight Loss',
-    'Dokter Gizi Klinis Jakarta Barat',
-    'Homecare Medis Kebon Jeruk',
     'Vaksinasi VidaShield',
-    'Kalkulator Risiko Jantung',
+    'Medical Check Up VidaHealth',
+    'Vitamin Booster VidaBoost',
+    'Home Care Medis Kebon Jeruk',
   ],
   authors: [{ name: 'Vida Medical Centre' }],
   openGraph: {
-    title: 'Vida Medical Centre | Solusi Kesehatan & Kebugaran Modern Jakarta Barat',
+    title: 'Vida Medical Centre | Layanan Medis Terpercaya untuk Keluarga',
     description:
-      'Solusi kesehatan terpadu: Cari Dokter Spesialis, Pusat Layanan Unggulan (VidaBoost, VidaFit, MCU, Homecare, Vaksinasi), dan Skrining Preventif di Gedung The Vida Kebon Jeruk.',
+      'Layanan kesehatan dekat, nyaman, dan penuh perhatian di Gedung The Vida Kebon Jeruk: Vaksinasi, Medical Check Up, Vitamin Booster, dan Home Care.',
     type: 'website',
     locale: 'id_ID',
     siteName: 'Vida Medical Centre',
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Vida Medical Centre - Gedung The Vida, Kebon Jeruk',
     description:
-      'Layanan medis dan kebugaran terpercaya dengan standar pelayanan prima berlokasi di Gedung The Vida Kebon Jeruk Jakarta Barat.',
+      'Layanan medis dan kebugaran terpercaya berlokasi di Gedung The Vida Kebon Jeruk Jakarta Barat.',
   },
 };
 
@@ -62,10 +61,10 @@ export default function RootLayout({
       lang="id"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${plusJakartaSans.variable} ${newsreader.variable} font-sans antialiased text-slate-800 bg-[#f8fafc] overflow-y-auto no-scrollbar`}
+      className={`${plusJakartaSans.variable} ${newsreader.variable} font-sans antialiased text-[#0B2545] bg-[#F6F9FC] overflow-y-auto`}
     >
-      <body suppressHydrationWarning className="min-h-screen bg-[#f8fafc] flex flex-col font-sans">
-        {children}
+      <body suppressHydrationWarning className="min-h-screen bg-[#F6F9FC] flex flex-col font-sans">
+        <BookingProvider>{children}</BookingProvider>
         <Analytics />
       </body>
     </html>

@@ -87,7 +87,7 @@ export default function VidaAppSection() {
               </a>
 
               <a
-                href="https://wa.me/628118951181"
+                href="https://wa.me/628115750260"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/15 text-white font-medium text-xs transition-colors"

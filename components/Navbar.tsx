@@ -5,91 +5,81 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Search,
   Calendar,
   ChevronDown,
   Menu,
   X,
+  Syringe,
   Stethoscope,
-  Activity,
+  Droplets,
   Home,
-  Sparkles,
+  LayoutGrid,
 } from 'lucide-react';
-import { scrollToHomeHref } from '@/lib/section-navigation';
+import VidaLogo from '@/components/VidaLogo';
+import { CLINIC_CONTACT } from '@/lib/clinic-data';
+import { dropdownVariants, TRANSITIONS } from '@/lib/motion';
 
 interface NavbarProps {
   onOpenBooking: (category?: string, service?: string) => void;
 }
 
-const SERVICE_DROPDOWN_ITEMS = [
+const SERVICE_MENU_ITEMS = [
   {
-    href: '/?coe=vidaboost#coe',
-    title: 'VidaBoost IV Therapy',
-    description: 'Infus Vitamin C dosis terukur & energi',
-    icon: Sparkles,
-    iconClassName: 'text-amber-500',
+    href: '/layanan',
+    title: 'Semua Layanan',
+    description: 'Ringkasan layanan medis & wellness',
+    icon: LayoutGrid,
   },
   {
-    href: '/?coe=vidafit#coe',
-    title: 'VidaFit Weight Management',
-    description: 'Spesialis Gizi Klinis & InBody 770',
-    icon: Activity,
-    iconClassName: 'text-[#0472B5]',
+    href: '/layanan/vaksinasi',
+    title: 'Vaksinasi',
+    description: 'Imunisasi influenza, HPV, pneumonia & dewasa',
+    icon: Syringe,
   },
   {
-    href: '/?layanan=mcu#comprehensive-services',
-    title: 'VidaHealth MCU',
-    description: 'Pemeriksaan skrining preventif rutin',
+    href: '/layanan/medical-check-up',
+    title: 'Medical Check Up',
+    description: 'Skrining organ vital + gratis tes InBody',
     icon: Stethoscope,
-    iconClassName: 'text-[#0472B5]',
   },
   {
-    href: '/?layanan=homecare#comprehensive-services',
-    title: 'Vida at Home (Homecare)',
-    description: 'Perawat luka modern & dokter ke rumah',
+    href: '/layanan/vitamin-booster',
+    title: 'Vitamin Booster',
+    description: 'Infus mikronutrien VidaBoost resmi BPOM',
+    icon: Droplets,
+  },
+  {
+    href: '/layanan/home-care',
+    title: 'Home Care',
+    description: 'Perawat luka, infus & dokter datang ke rumah',
     icon: Home,
-    iconClassName: 'text-teal-600',
   },
 ] as const;
 
-const MOBILE_NAV_ITEMS = [
-  {
-    href: '/#doctor-search',
-    label: 'Cari Dokter & Jadwal',
-    className: 'text-[#0472B5]',
-  },
-  {
-    href: '/#coe',
-    label: 'Pusat Layanan Unggulan',
-    className: '',
-  },
-  {
-    href: '/?layanan=mcu#comprehensive-services',
-    label: 'Paket MCU & Laboratorium',
-    className: '',
-  },
-  {
-    href: '/#heart-calculator',
-    label: 'Kalkulator Risiko Jantung',
-    className: 'text-rose-700',
-  },
-  {
-    href: '/#vida-app',
-    label: 'MyVida Patient Portal',
-    className: '',
-  },
+const MAIN_NAV_LINKS = [
+  { href: '/', label: 'Beranda' },
+  { href: '/tentang-kami', label: 'Tentang Kami' },
+  // Layanan rendered with dropdown between Tentang Kami and Promo
+  { href: '/promo', label: 'Promo' },
+  { href: '/kontak', label: 'Kontak' },
 ] as const;
 
 export default function Navbar({ onOpenBooking }: NavbarProps) {
-  const pathname = usePathname();
-  const isArticleRoute = pathname?.startsWith('/artikel') ?? false;
+  const pathname = usePathname() ?? '/';
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
 
   const headerRef = useRef<HTMLElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Sync sticky navbar bar height to CSS --navbar-height so hash links never land behind the header.
+  const isLayananActive = pathname === '/layanan' || pathname.startsWith('/layanan/');
+
+  const isRouteActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
@@ -105,7 +95,6 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Dismiss open menus on Escape or pointer interaction outside.
   useEffect(() => {
     if (!servicesDropdownOpen && !mobileMenuOpen) return;
 
@@ -134,70 +123,54 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     };
   }, [servicesDropdownOpen, mobileMenuOpen]);
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const closeMenus = () => {
     setServicesDropdownOpen(false);
     setMobileMenuOpen(false);
-
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
-      return;
-    }
-
-    const isHomeTarget = href === '/' || href.startsWith('/#') || href.startsWith('/?');
-    if (pathname === '/' && isHomeTarget) {
-      e.preventDefault();
-      scrollToHomeHref(href);
-      return;
-    }
-
-    if (pathname === '/artikel' && href === '/artikel') {
-      e.preventDefault();
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    }
   };
 
   return (
     <header
       ref={headerRef}
-      className="w-full sticky top-0 z-50 bg-white/95 backdrop-blur-md font-sans transition-colors"
+      className="w-full sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 font-sans"
     >
-      {/* 1. MAIN HEADER NAVIGATION */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14">
-          {/* Brand Wordmark & Emblem */}
+        <div className="flex items-center justify-between h-18">
+          {/* Brand Logo */}
           <Link
             href="/"
-            onClick={(e) => handleLinkClick(e, '/')}
-            className="flex items-center space-x-3 group shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5] rounded-md"
+            onClick={closeMenus}
+            aria-label="Beranda Vida Medical Centre"
+            className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5]"
           >
-            <img
-              src="/images/vida_logo.jpg"
-              alt="Vida Medical Centre"
-              width={40}
-              height={40}
-              className="w-10 h-10 border-[0.1px] border-[#0472B5] rounded-sm shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-            />
-            <div>
-              <div className="text-lg font-bold text-[#0472B5] tracking-tight leading-none flex items-center">
-                Vida Medical Centre
-              </div>
-            </div>
+            <VidaLogo variant="dark" />
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav
-            aria-label="Navigasi utama"
-            className="hidden xl:flex items-center space-x-6 text-sm font-medium text-slate-600"
-          >
-            <Link
-              href="/#doctor-search"
-              onClick={(e) => handleLinkClick(e, '/#doctor-search')}
-              className="hover:text-[#0472B5] transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm"
-            >
-              Cari Dokter
-            </Link>
+          {/* Desktop Navigation */}
+          <nav aria-label="Navigasi utama" className="hidden lg:flex items-center gap-8 text-sm">
+            {MAIN_NAV_LINKS.slice(0, 2).map((item) => {
+              const active = isRouteActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={`relative py-2 font-medium transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm ${
+                    active ? 'text-[#0472B5]' : 'text-slate-600 hover:text-[#0B2545]'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {active && (
+                    <motion.span
+                      layoutId="navbar-active-underline"
+                      transition={TRANSITIONS.spring}
+                      className="absolute inset-x-0 -bottom-[1px] h-[2px] rounded-full bg-[#0472B5]"
+                    />
+                  )}
+                </Link>
+              );
+            })}
 
-            {/* Dropdown Layanan Medis */}
+            {/* Layanan Dropdown */}
             <div
               ref={dropdownRef}
               className="relative"
@@ -214,42 +187,70 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
               <button
                 type="button"
                 aria-expanded={servicesDropdownOpen}
-                aria-controls="services-dropdown"
+                aria-controls="layanan-dropdown"
                 onClick={() => setServicesDropdownOpen((prev) => !prev)}
-                className="hover:text-[#0472B5] transition-colors flex items-center space-x-1 py-2 cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm"
+                className={`relative py-2 flex items-center gap-1.5 font-medium transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm ${
+                  isLayananActive ? 'text-[#0472B5]' : 'text-slate-600 hover:text-[#0B2545]'
+                }`}
               >
-                <span>Layanan Medis</span>
+                <span>Layanan</span>
                 <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-150 ${
+                  className={`w-4 h-4 transition-transform duration-150 ${
                     servicesDropdownOpen ? 'rotate-180 text-[#0472B5]' : 'text-slate-400'
                   }`}
+                  strokeWidth={1.5}
                 />
+                {isLayananActive && (
+                  <motion.span
+                    layoutId="navbar-active-underline"
+                    transition={TRANSITIONS.spring}
+                    className="absolute inset-x-0 -bottom-[1px] h-[2px] rounded-full bg-[#0472B5]"
+                  />
+                )}
               </button>
 
               <AnimatePresence>
                 {servicesDropdownOpen && (
                   <motion.div
-                    id="services-dropdown"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 4 }}
-                    transition={{ duration: 0.15, ease: 'easeOut' }}
-                    className="absolute left-0 top-full pt-2 z-50"
+                    id="layanan-dropdown"
+                    variants={dropdownVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="absolute left-0 top-full pt-2.5 z-50"
                   >
-                    <div className="w-72 bg-white rounded-xl shadow-lg border border-slate-200/90 py-2">
-                      {SERVICE_DROPDOWN_ITEMS.map((item) => {
+                    <div className="w-76 bg-white rounded-2xl shadow-[0_12px_32px_rgba(11,37,69,0.08)] border border-slate-200/90 p-2">
+                      {SERVICE_MENU_ITEMS.map((item) => {
                         const Icon = item.icon;
+                        const active =
+                          item.href === '/layanan'
+                            ? pathname === '/layanan'
+                            : pathname === item.href;
                         return (
                           <Link
                             key={item.href}
                             href={item.href}
-                            onClick={(e) => handleLinkClick(e, item.href)}
-                            className="flex items-start space-x-3 px-4 py-2 hover:bg-slate-50 text-slate-700 hover:text-[#0472B5] transition-colors focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#0472B5]"
+                            onClick={closeMenus}
+                            className={`flex items-start gap-3 px-3 py-2.5 rounded-xl transition-colors focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#0472B5] ${
+                              active
+                                ? 'bg-[#EBF4FB] text-[#0472B5]'
+                                : 'text-[#0B2545] hover:bg-slate-50'
+                            }`}
                           >
-                            <Icon className={`w-4 h-4 shrink-0 mt-0.5 ${item.iconClassName}`} />
+                            <span
+                              className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                                active
+                                  ? 'bg-[#0472B5] text-white'
+                                  : 'bg-[#EBF4FB] text-[#0472B5]'
+                              }`}
+                            >
+                              <Icon className="w-4 h-4" strokeWidth={1.5} />
+                            </span>
                             <div>
-                              <div className="font-semibold text-xs text-slate-900">{item.title}</div>
-                              <div className="text-[11px] text-slate-500">{item.description}</div>
+                              <div className="text-sm font-medium leading-snug">{item.title}</div>
+                              <div className="text-xs text-slate-500 mt-0.5 leading-snug">
+                                {item.description}
+                              </div>
                             </div>
                           </Link>
                         );
@@ -260,127 +261,75 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
               </AnimatePresence>
             </div>
 
-            <Link
-              href="/#coe"
-              onClick={(e) => handleLinkClick(e, '/#coe')}
-              className="hover:text-[#0472B5] transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm"
-            >
-              Pusat Unggulan
-            </Link>
-
-            <Link
-              href="/#heart-calculator"
-              onClick={(e) => handleLinkClick(e, '/#heart-calculator')}
-              className="hover:text-[#0472B5] transition-colors flex items-center space-x-1 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm"
-            >
-              <span>Kalkulator Jantung</span>
-            </Link>
-
-            {/* <a
-              href="/#patient-story"
-              className="hover:text-[#0472B5] transition-colors"
-            >
-              Kisah Pasien
-            </a> */}
-
-            <Link
-              href="/#vida-app"
-              onClick={(e) => handleLinkClick(e, '/#vida-app')}
-              className="hover:text-[#0472B5] transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm"
-            >
-              MyVida Portal
-            </Link>
-
-            <Link
-              href="/artikel"
-              onClick={(e) => handleLinkClick(e, '/artikel')}
-              aria-current={isArticleRoute ? 'page' : undefined}
-              className={`transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm ${
-                isArticleRoute
-                  ? 'text-[#0472B5] font-semibold underline decoration-2 underline-offset-8'
-                  : 'hover:text-[#0472B5]'
-              }`}
-            >
-              Artikel
-            </Link>
+            {MAIN_NAV_LINKS.slice(2).map((item) => {
+              const active = isRouteActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={`relative py-2 font-medium transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0472B5] rounded-sm ${
+                    active ? 'text-[#0472B5]' : 'text-slate-600 hover:text-[#0B2545]'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {active && (
+                    <motion.span
+                      layoutId="navbar-active-underline"
+                      transition={TRANSITIONS.spring}
+                      className="absolute inset-x-0 -bottom-[1px] h-[2px] rounded-full bg-[#0472B5]"
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* Desktop Action CTAs */}
-          <div className="hidden xl:flex items-center space-x-3 shrink-0">
-            <Link
-              href="/#doctor-search"
-              onClick={(e) => handleLinkClick(e, '/#doctor-search')}
-              className="p-2 text-slate-500 hover:text-[#0472B5] hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5]"
-              title="Pencarian Dokter"
-              aria-label="Pencarian Dokter"
-            >
-              <Search className="w-4 h-4" />
-            </Link>
-
-            {/* Quiet Primary Action */}
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center shrink-0">
             <motion.button
               whileTap={{ scale: 0.98 }}
+              transition={TRANSITIONS.fast}
               type="button"
-              onClick={() => onOpenBooking('doctor', 'Konsultasi Dokter Spesialis')}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#0472B5] hover:bg-[#035c93] text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5]"
+              onClick={() => onOpenBooking('vidaboost', 'VidaBoost Gold')}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0472B5] hover:bg-[#035c93] text-white font-medium text-sm shadow-xs transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5]"
             >
-              <Calendar className="w-3.5 h-3.5 text-amber-400" />
-              <span>Buat Janji Temu</span>
+              <Calendar className="w-4 h-4" strokeWidth={1.5} />
+              <span>Buat Janji</span>
             </motion.button>
           </div>
 
-          {/* Mobile & Tablet Menu Controls */}
-          <div className="flex items-center space-x-2 xl:hidden shrink-0">
-            <Link
-              href="/#doctor-search"
-              onClick={(e) => handleLinkClick(e, '/#doctor-search')}
-              className="hidden sm:inline-flex p-2 text-slate-500 hover:text-[#0472B5] hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5]"
-              title="Pencarian Dokter"
-              aria-label="Pencarian Dokter"
-            >
-              <Search className="w-4 h-4" />
-            </Link>
-            <button
+          {/* Mobile Controls */}
+          <div className="flex items-center gap-2 lg:hidden shrink-0">
+            <motion.button
+              whileTap={{ scale: 0.98 }}
               type="button"
-              onClick={() => onOpenBooking('doctor', 'Konsultasi Dokter')}
-              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-[#0472B5] hover:bg-[#035c93] text-white font-semibold text-xs transition-colors cursor-pointer"
+              onClick={() => onOpenBooking('vidaboost', 'VidaBoost Gold')}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#0472B5] hover:bg-[#035c93] text-white font-medium text-xs transition-colors cursor-pointer"
             >
-              <span className="sm:hidden">Janji Temu</span>
-              <span className="hidden sm:inline">Buat Janji Temu</span>
-            </button>
+              <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>Buat Janji</span>
+            </motion.button>
+
             <button
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5] cursor-pointer"
+              className="p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0472B5]"
               aria-label="Navigasi menu"
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-drawer"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" strokeWidth={1.5} />
+              ) : (
+                <Menu className="w-5 h-5" strokeWidth={1.5} />
+              )}
             </button>
           </div>
         </div>
       </div>
 
-      {/* 2. CLINICAL STATUS & HOTLINE STRIP */}
-      <div className="bg-[#035c93] text-white text-xs py-2 px-4 border-t border-[#0472B5]/40">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="text-slate-300">Pelayanan Aktif:</span>
-            <span className="font-medium text-white">Senin – Sabtu (08.00 – 20.00 WIB)</span>
-          </div>
-          <div className="hidden md:flex items-center space-x-4 text-slate-300">
-            <span>Homecare: <strong className="font-semibold text-white">0811-5750-260</strong></span>
-            <span>·</span>
-            <span>Hotline Darurat: <strong className="font-semibold text-white">0811-5750-260</strong></span>
-            <span>·</span>
-            <span className="text-amber-300 font-medium">The Vida Building Kebon Jeruk</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. MOBILE SLIDE-DOWN DRAWER (Overlay outside flow so header height stays stable during scroll) */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -388,62 +337,115 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="xl:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 shadow-xl px-4 pt-3 pb-6 space-y-4 max-h-[calc(100dvh-var(--navbar-height,5.5625rem))] overflow-y-auto z-40"
+            transition={TRANSITIONS.fast}
+            className="lg:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 shadow-lg px-4 pt-3 pb-6 space-y-4 max-h-[calc(100dvh-var(--navbar-height,4.5rem))] overflow-y-auto z-40"
           >
-            <nav aria-label="Navigasi seluler" className="space-y-1 text-sm font-medium text-slate-800">
-              {MOBILE_NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleLinkClick(e, item.href)}
-                  className={`block px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors ${item.className}`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {/* <Link
-                href="/#patient-story"
-                onClick={(e) => handleLinkClick(e, '/#patient-story')}
-                className="block px-3 py-2 rounded-lg hover:bg-slate-50"
-              >
-                Kisah Pasien (#BersamaVida)
-              </Link> */}
+            <nav aria-label="Navigasi seluler" className="space-y-1 text-sm font-medium">
               <Link
-                href="/artikel"
-                onClick={(e) => handleLinkClick(e, '/artikel')}
-                aria-current={isArticleRoute ? 'page' : undefined}
-                className={`block px-3 py-2 rounded-lg transition-colors ${
-                  isArticleRoute
-                    ? 'bg-[#0472B5]/10 text-[#0472B5] font-semibold'
-                    : 'hover:bg-slate-50'
+                href="/"
+                onClick={closeMenus}
+                className={`block px-3 py-2.5 rounded-lg transition-colors ${
+                  pathname === '/'
+                    ? 'bg-[#EBF4FB] text-[#0472B5]'
+                    : 'text-[#0B2545] hover:bg-slate-50'
                 }`}
               >
-                Healthpedia Artikel Medis
+                Beranda
+              </Link>
+
+              <Link
+                href="/tentang-kami"
+                onClick={closeMenus}
+                className={`block px-3 py-2.5 rounded-lg transition-colors ${
+                  isRouteActive('/tentang-kami')
+                    ? 'bg-[#EBF4FB] text-[#0472B5]'
+                    : 'text-[#0B2545] hover:bg-slate-50'
+                }`}
+              >
+                Tentang Kami
+              </Link>
+
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setMobileServicesOpen((prev) => !prev)}
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
+                    isLayananActive
+                      ? 'bg-[#EBF4FB] text-[#0472B5]'
+                      : 'text-[#0B2545] hover:bg-slate-50'
+                  }`}
+                >
+                  <span>Layanan</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-150 ${
+                      mobileServicesOpen ? 'rotate-180' : ''
+                    }`}
+                    strokeWidth={1.5}
+                  />
+                </button>
+
+                {mobileServicesOpen && (
+                  <div className="mt-1 pl-4 space-y-1 border-l border-slate-200 ml-3">
+                    {SERVICE_MENU_ITEMS.map((item) => {
+                      const active =
+                        item.href === '/layanan'
+                          ? pathname === '/layanan'
+                          : pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={closeMenus}
+                          className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                            active
+                              ? 'text-[#0472B5] font-medium bg-[#EBF4FB]/60'
+                              : 'text-slate-600 hover:bg-slate-50 hover:text-[#0B2545]'
+                          }`}
+                        >
+                          {item.title}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <Link
+                href="/promo"
+                onClick={closeMenus}
+                className={`block px-3 py-2.5 rounded-lg transition-colors ${
+                  isRouteActive('/promo')
+                    ? 'bg-[#EBF4FB] text-[#0472B5]'
+                    : 'text-[#0B2545] hover:bg-slate-50'
+                }`}
+              >
+                Promo
+              </Link>
+
+              <Link
+                href="/kontak"
+                onClick={closeMenus}
+                className={`block px-3 py-2.5 rounded-lg transition-colors ${
+                  isRouteActive('/kontak')
+                    ? 'bg-[#EBF4FB] text-[#0472B5]'
+                    : 'text-[#0B2545] hover:bg-slate-50'
+                }`}
+              >
+                Kontak
               </Link>
             </nav>
 
-            <div className="pt-3 border-t border-slate-100 flex flex-col space-y-1.5 text-xs text-slate-600">
-              <div className="flex justify-between">
-                <span>Hotline Klinik:</span>
-                <strong className="text-slate-900">0811-5750-260</strong>
-              </div>
-              <div className="flex justify-between">
-                <span>WhatsApp:</span>
-                <strong className="text-emerald-700">0811-5750-260</strong>
-              </div>
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 px-1">
+              <span>WhatsApp Klinik</span>
+              <a
+                href={CLINIC_CONTACT.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono tabular-nums font-medium text-[#0472B5]"
+              >
+                {CLINIC_CONTACT.whatsappNumberDisplay}
+              </a>
             </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenBooking('doctor', 'Konsultasi Spesialis');
-              }}
-              className="w-full py-2.5 rounded-lg bg-[#0472B5] text-white font-semibold text-xs text-center cursor-pointer shadow-sm"
-            >
-              Buat Janji Temu Dokter
-            </button>
           </motion.div>
         )}
       </AnimatePresence>

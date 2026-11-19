@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { HOMECARE_SERVICES, type HomecareService } from '@/lib/clinic-rules';
-import { Home, ShieldCheck, Check, Phone, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { HOMECARE_SERVICES } from '@/lib/clinic-rules';
+import { CLINIC_CONTACT } from '@/lib/clinic-data';
+import { ShieldCheck, Check, Phone, ArrowRight } from 'lucide-react';
+import { TRANSITIONS } from '@/lib/motion';
 
 interface HomecareSectionProps {
   onSelectHomecareService: (serviceTitle: string) => void;
@@ -14,42 +17,27 @@ export default function HomecareSection({ onSelectHomecareService }: HomecareSec
   const activeService = HOMECARE_SERVICES.find((s) => s.id === activeServiceId) || HOMECARE_SERVICES[0];
 
   return (
-    <section id="homecare" className="py-16 lg:py-20 bg-slate-50/60 border-b border-slate-200">
+    <section id="homecare" className="py-12 sm:py-16 bg-[#F6F9FC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <div className="text-xs font-medium text-teal-800 mb-2 flex items-center gap-1.5">
-            <Home className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-            <span>Pelayanan medis di rumah pasien</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-950 tracking-tight mb-3">
-            Homecare Medis: Tindakan klinis profesional di kediaman Anda
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            Menghadirkan penanganan steril perawat dan dokter berlisensi di area DKI Jakarta. Sesuai untuk pasien tirah baring (bedridden), lansia, atau pemulihan luka pasca rawat inap.
-          </p>
-        </div>
-
-        {/* 2-Column Clinical Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start mb-10">
           {/* Left Column: Visual & Safety Card */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="rounded-xl overflow-hidden border border-slate-200 bg-white">
-              <div className="relative aspect-[4/3] w-full bg-slate-100">
+            <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(11,37,69,0.04)]">
+              <div className="relative aspect-[4/3] w-full bg-[#EBF4FB]">
                 <Image
                   src="/images/homecare_medical_nurse.jpg"
-                  alt="Perawat Profesional Vida Medical Centre Melayani Layanan Homecare di Rumah Pasien"
+                  alt="Perawat Profesional Vida Medical Centre Melayani Layanan Home Care di Rumah Pasien"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 40vw"
                 />
               </div>
-              <div className="p-4 bg-slate-50 border-t border-slate-200">
-                <div className="flex items-center gap-2 text-xs font-medium text-slate-900 mb-1">
-                  <ShieldCheck className="w-4 h-4 text-teal-800" strokeWidth={1.5} />
+              <div className="p-5 bg-white border-t border-slate-100">
+                <div className="flex items-center gap-2 text-sm font-semibold text-[#0B2545] mb-1">
+                  <ShieldCheck className="w-4 h-4 text-[#0472B5]" strokeWidth={1.5} />
                   <span>Protokol higienitas & aseptik klinis</span>
                 </div>
-                <p className="text-xs text-slate-600 font-normal leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Peralatan medis steril sekali pakai (disposable sterile kit), pengelolaan limbah medis terstandar, dan pencatatan riwayat tindakan pasien.
                 </p>
               </div>
@@ -58,87 +46,105 @@ export default function HomecareSection({ onSelectHomecareService }: HomecareSec
 
           {/* Right Column: Services Selection */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {HOMECARE_SERVICES.map((service) => {
                 const isActive = activeServiceId === service.id;
 
                 return (
-                  <div
+                  <button
                     key={service.id}
+                    type="button"
                     onClick={() => setActiveServiceId(service.id)}
-                    className={`p-4 rounded-xl border text-left cursor-pointer transition-colors ${
+                    className={`p-4 rounded-2xl border text-left cursor-pointer transition-colors ${
                       isActive
-                        ? 'border-slate-800 bg-white shadow-xs'
-                        : 'border-slate-200 bg-white/70 hover:border-slate-300'
+                        ? 'border-[#0472B5] bg-white ring-1 ring-[#0472B5]/20 shadow-xs'
+                        : 'border-slate-200/80 bg-white/80 hover:border-slate-300 hover:bg-white'
                     }`}
                   >
-                    <span className="text-[11px] font-normal text-slate-500 block mb-0.5">
+                    <span className="text-[11px] font-medium text-[#0472B5] block mb-0.5">
                       {service.category}
                     </span>
-                    <h4 className="text-sm font-semibold text-slate-900 mb-1">{service.title}</h4>
-                    <p className="text-xs text-slate-600 font-normal line-clamp-2">{service.description}</p>
-                  </div>
+                    <h3 className="text-sm font-semibold text-[#0B2545] mb-1">{service.title}</h3>
+                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                      {service.description}
+                    </p>
+                  </button>
                 );
               })}
             </div>
 
             {/* Selected Service Detailed Box */}
-            <div className="p-5 bg-white rounded-xl border border-slate-200 space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeService.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={TRANSITIONS.fast}
+                className="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_2px_rgba(11,37,69,0.04)] space-y-4"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#0B2545]">{activeService.title}</h3>
+                    <span className="text-xs text-slate-500">{activeService.category}</span>
+                  </div>
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    onClick={() => onSelectHomecareService(activeService.title)}
+                    className="px-5 py-2.5 bg-[#0472B5] hover:bg-[#035c93] text-white text-xs sm:text-sm font-medium rounded-full transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                  >
+                    <span>Pesan Layanan Ini</span>
+                    <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+                  </motion.button>
+                </div>
+
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {activeService.description}
+                </p>
+
                 <div>
-                  <h3 className="text-base font-semibold text-slate-900">{activeService.title}</h3>
-                  <span className="text-xs text-slate-500 font-normal">{activeService.category}</span>
+                  <span className="text-xs font-medium text-slate-500 block mb-2.5">
+                    Perlengkapan dan standar tindakan
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {activeService.includedEquipments.map((eq, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F6F9FC] border border-slate-200/80 rounded-lg text-xs text-[#0B2545]"
+                      >
+                        <Check className="w-3.5 h-3.5 text-[#0472B5]" strokeWidth={1.5} />
+                        <span>{eq}</span>
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <button
-                  onClick={() => onSelectHomecareService(activeService.title)}
-                  className="px-4 py-2 bg-teal-800 hover:bg-teal-900 text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
-                >
-                  <span>Pesan layanan ini</span>
-                  <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-                </button>
-              </div>
-
-              <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
-                {activeService.description}
-              </p>
-
-              <div>
-                <span className="text-xs font-medium text-slate-500 block mb-2">
-                  Perlengkapan dan standar tindakan:
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {activeService.includedEquipments.map((eq, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-xs text-slate-700 font-normal"
-                    >
-                      <Check className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-                      <span>{eq}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* Quiet WhatsApp Coordination Box */}
-        <div className="bg-slate-950 text-slate-200 rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-800">
+        {/* WhatsApp Coordination Box */}
+        <div className="bg-[#092B4F] text-sky-100 rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row items-center justify-between gap-4 border border-[#0472B5]/30">
           <div className="space-y-1 text-center sm:text-left">
-            <h4 className="text-sm font-semibold text-white">Koordinasi jadwal homecare hari yang sama</h4>
-            <p className="text-xs text-slate-400 font-normal max-w-xl">
+            <h4 className="text-base font-semibold text-white">
+              Koordinasi jadwal home care hari yang sama
+            </h4>
+            <p className="text-xs sm:text-sm text-sky-100/80 max-w-xl">
               Hubungi staf perawat via WhatsApp untuk konfirmasi ketersediaan tenaga medis dan perkiraan waktu ketibaan di alamat Anda.
             </p>
           </div>
 
           <a
-            href="https://wa.me/628115750260?text=Halo%20Vida%20Medical%20Centre,%20saya%20membutuhkan%20layanan%20Homecare%20ke%20rumah."
+            href={`${CLINIC_CONTACT.whatsappHref}?text=${encodeURIComponent(
+              'Halo Vida Medical Centre, saya membutuhkan layanan Home Care ke rumah.'
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-slate-950 font-medium text-xs rounded-lg hover:bg-slate-100 transition-colors shrink-0 whitespace-nowrap"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#0B2545] font-medium text-xs sm:text-sm rounded-full hover:bg-[#EBF4FB] transition-colors shrink-0 whitespace-nowrap"
           >
-            <Phone className="w-3.5 h-3.5 text-teal-800" strokeWidth={1.5} />
-            <span className="font-mono tabular-nums">WhatsApp 0811 5750 260</span>
+            <Phone className="w-4 h-4 text-[#0472B5]" strokeWidth={1.5} />
+            <span className="font-mono tabular-nums">WhatsApp {CLINIC_CONTACT.whatsappNumberDisplay}</span>
           </a>
         </div>
       </div>

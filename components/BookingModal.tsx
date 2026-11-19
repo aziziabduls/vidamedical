@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SelectDemo, { type SelectOptionItem } from '@/components/shadcn-studio/select/select-10';
 import {
@@ -21,6 +21,8 @@ import {
   HOMECARE_SERVICES,
   VACCINATION_LIST,
 } from '@/lib/clinic-rules';
+import { CLINIC_CONTACT } from '@/lib/clinic-data';
+import { TRANSITIONS } from '@/lib/motion';
 
 type ServiceCategory = 'vidaboost' | 'vidahealth' | 'vidafit' | 'homecare' | 'vaksinasi';
 
@@ -110,15 +112,26 @@ export default function BookingModal({
   initialCategory = 'vidaboost',
   initialOption,
 }: BookingModalProps) {
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   return (
-    <BookingModalInner
-      key={`${initialCategory}-${initialOption || ''}`}
-      onClose={onClose}
-      initialCategory={initialCategory}
-      initialOption={initialOption}
-    />
+    <AnimatePresence>
+      {isOpen && (
+        <BookingModalInner
+          key={`${initialCategory}-${initialOption || ''}`}
+          onClose={onClose}
+          initialCategory={initialCategory}
+          initialOption={initialOption}
+        />
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -134,14 +147,12 @@ function BookingModalInner({
   const normalizedCategory = ['vidaboost', 'vidahealth', 'vidafit', 'homecare', 'vaksinasi'].includes(
     initialCategory.toLowerCase()
   )
-    ? (initialCategory.toLowerCase() as 'vidaboost' | 'vidahealth' | 'vidafit' | 'homecare' | 'vaksinasi')
+    ? (initialCategory.toLowerCase() as ServiceCategory)
     : 'vidaboost';
 
   const [patientName, setPatientName] = useState('');
   const [phone, setPhone] = useState('');
-  const [category, setCategory] = useState<'vidaboost' | 'vidahealth' | 'vidafit' | 'homecare' | 'vaksinasi'>(
-    normalizedCategory
-  );
+  const [category, setCategory] = useState<ServiceCategory>(normalizedCategory);
   const [option, setOption] = useState(
     initialOption || getDefaultOptionForCategory(normalizedCategory)
   );
@@ -155,6 +166,7 @@ function BookingModalInner({
     }
     return baseOptions;
   }, [category, option]);
+
   const [visitType, setVisitType] = useState<'clinic' | 'homecare'>(
     normalizedCategory === 'homecare' ? 'homecare' : 'clinic'
   );
@@ -165,9 +177,7 @@ function BookingModalInner({
   const [confirmedBooking, setConfirmedBooking] = useState<BookingPayload | null>(null);
   const [waUrl, setWaUrl] = useState('');
 
-  const handleCategoryChange = (
-    newCat: 'vidaboost' | 'vidahealth' | 'vidafit' | 'homecare' | 'vaksinasi'
-  ) => {
+  const handleCategoryChange = (newCat: ServiceCategory) => {
     setCategory(newCat);
     setOption(getDefaultOptionForCategory(newCat));
     if (newCat === 'homecare') {
@@ -200,32 +210,45 @@ function BookingModalInner({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={TRANSITIONS.fast}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 overflow-y-auto bg-[#0B2545]/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6"
+    >
       <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-modal-title"
+        initial={{ opacity: 0, scale: 0.97, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 8 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-        className="bg-white rounded-xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden relative"
+        exit={{ opacity: 0, scale: 0.97, y: 8 }}
+        transition={TRANSITIONS.spring}
+        className="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden relative"
       >
         {/* Modal Header */}
-        <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div className="px-5 py-4 bg-[#F6F9FC] border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-[#0472B5] text-[#ffcf00] flex items-center justify-center font-bold text-xs">
+            <div className="w-8 h-8 rounded-lg bg-[#0472B5] text-white flex items-center justify-center font-semibold text-xs">
               V
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-900 leading-tight">
+              <h3 id="booking-modal-title" className="text-sm font-semibold text-[#0B2545] leading-tight">
                 Reservasi Jadwal Layanan Medis
               </h3>
               <p className="text-xs text-slate-500 font-normal">
-                Vida Medical Centre · Gedung The Vida & Homecare
+                Vida Medical Centre · Gedung The Vida & Home Care
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-md hover:bg-slate-200/60 transition-colors cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200/60 transition-colors cursor-pointer"
             aria-label="Tutup formulir reservasi"
           >
             <X className="w-4 h-4" strokeWidth={1.5} />
@@ -235,46 +258,44 @@ function BookingModalInner({
         {/* Modal Body */}
         <div className="p-5">
           {submitted && confirmedBooking ? (
-            /* Confirmation card */
             <div className="text-center space-y-4 py-2">
               <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center mx-auto">
-                <Check className="w-5 h-5" strokeWidth={2} />
+                <Check className="w-5 h-5" strokeWidth={1.5} />
               </div>
 
               <div className="space-y-1">
-                <h4 className="text-base font-semibold text-slate-900">
+                <h4 className="text-base font-semibold text-[#0B2545]">
                   Data reservasi siap dikonfirmasi
                 </h4>
                 <p className="text-xs text-slate-600 font-normal max-w-md mx-auto">
-                  Untuk memproses jadwal dokter dan perawat, lanjutkan pengiriman rincian reservasi melalui WhatsApp resmi klinik.
+                  Lanjutkan pengiriman rincian reservasi melalui WhatsApp resmi klinik agar tim resepsionis dapat mengonfirmasi jadwal Anda.
                 </p>
               </div>
 
-              {/* Summary box */}
-              <div className="bg-slate-50 rounded-lg p-4 text-left text-xs space-y-2 border border-slate-200/80">
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-normal">Nama pasien:</span>
-                  <span className="font-medium text-slate-900">{confirmedBooking.patientName}</span>
+              <div className="bg-[#F6F9FC] rounded-xl p-4 text-left text-xs space-y-2 border border-slate-200/80">
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500 font-normal">Nama pasien</span>
+                  <span className="font-medium text-[#0B2545] text-right">{confirmedBooking.patientName}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-normal">Nomor WhatsApp:</span>
-                  <span className="font-mono tabular-nums text-slate-900">{confirmedBooking.phone}</span>
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500 font-normal">Nomor WhatsApp</span>
+                  <span className="font-mono tabular-nums text-[#0B2545]">{confirmedBooking.phone}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-normal">Layanan:</span>
-                  <span className="font-medium text-slate-900">{confirmedBooking.serviceOption}</span>
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500 font-normal">Layanan</span>
+                  <span className="font-medium text-[#0B2545] text-right">{confirmedBooking.serviceOption}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-normal">Jadwal:</span>
-                  <span className="font-mono tabular-nums text-slate-900">
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500 font-normal">Jadwal</span>
+                  <span className="font-mono tabular-nums text-[#0B2545]">
                     {confirmedBooking.preferredDate} · {confirmedBooking.preferredTime}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-normal">Tipe kunjungan:</span>
-                  <span className="font-medium text-slate-900">
+                <div className="flex justify-between gap-4">
+                  <span className="text-slate-500 font-normal">Tipe kunjungan</span>
+                  <span className="font-medium text-[#0B2545] text-right">
                     {confirmedBooking.visitType === 'homecare'
-                      ? 'Layanan ke rumah (Homecare)'
+                      ? 'Layanan ke rumah (Home Care)'
                       : 'Klinik Gedung The Vida'}
                   </span>
                 </div>
@@ -285,47 +306,45 @@ function BookingModalInner({
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow"
+                  className="w-full py-2.5 px-4 bg-[#0472B5] hover:bg-[#035c93] text-white font-medium text-xs rounded-full transition-colors flex items-center justify-center gap-2 shadow-xs"
                 >
-                  <span>Kirim via WhatsApp Resmi (0811 8951 181)</span>
+                  <span>Kirim via WhatsApp ({CLINIC_CONTACT.whatsappNumberDisplay})</span>
                   <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.5} />
                 </a>
 
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full py-2 px-4 text-xs font-normal text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                  className="w-full py-2 px-4 text-xs font-normal text-slate-600 hover:text-[#0B2545] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                 >
                   Tutup jendela
                 </button>
               </div>
             </div>
           ) : (
-            /* Booking Form */
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              {/* Category selector */}
               <div>
-                <label className="font-medium text-slate-700 block mb-1">
+                <label className="font-medium text-slate-700 block mb-1.5">
                   Pilih kelompok layanan
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                   {(
                     [
-                      { id: 'vidaboost', label: 'VidaBoost IV' },
-                      { id: 'vidahealth', label: 'VidaHealth MCU' },
-                      { id: 'vidafit', label: 'VidaFit Gizi' },
-                      { id: 'homecare', label: 'Homecare' },
                       { id: 'vaksinasi', label: 'Vaksinasi' },
+                      { id: 'vidahealth', label: 'Medical Check Up' },
+                      { id: 'vidaboost', label: 'Vitamin Booster' },
+                      { id: 'homecare', label: 'Home Care' },
+                      { id: 'vidafit', label: 'Konsultasi Gizi' },
                     ] as const
                   ).map((cat) => (
                     <button
                       key={cat.id}
                       type="button"
                       onClick={() => handleCategoryChange(cat.id)}
-                      className={`py-1.5 px-2 rounded-md font-medium border transition-colors text-center truncate cursor-pointer ${
+                      className={`py-2 px-2.5 rounded-lg font-medium border transition-colors text-center truncate cursor-pointer ${
                         category === cat.id
-                          ? 'border-slate-800 bg-slate-900 text-white'
-                          : 'border-slate-200 bg-slate-50 text-slate-600 hover:text-slate-900'
+                          ? 'border-[#0472B5] bg-[#0472B5] text-white'
+                          : 'border-slate-200 bg-[#F6F9FC] text-slate-600 hover:text-[#0B2545]'
                       }`}
                     >
                       {cat.label}
@@ -334,11 +353,10 @@ function BookingModalInner({
                 </div>
               </div>
 
-              {/* Specific Option Selector */}
               <div>
                 <SelectDemo
                   name="serviceOption"
-                  label="Pilihan paket / tindakan"
+                  label="Pilihan paket atau tindakan"
                   groupLabel="Pilihan Layanan"
                   items={packageOptions}
                   value={option}
@@ -347,14 +365,13 @@ function BookingModalInner({
                   }}
                   className="max-w-none space-y-1"
                   labelClassName="text-xs font-medium leading-normal text-slate-700"
-                  triggerClassName="w-full data-[size=default]:h-9 px-3 rounded-lg border-slate-300 text-slate-900 bg-white text-xs font-normal focus-visible:ring-1 focus-visible:ring-teal-700 focus-visible:border-teal-700 cursor-pointer"
+                  triggerClassName="w-full data-[size=default]:h-9 px-3 rounded-lg border-slate-300 text-[#0B2545] bg-white text-xs font-normal focus-visible:ring-1 focus-visible:ring-[#0472B5] focus-visible:border-[#0472B5] cursor-pointer"
                   contentClassName="w-auto min-w-(--anchor-width) max-w-[min(92vw,28rem)]"
                 />
               </div>
 
-              {/* Location Type */}
               <div>
-                <label className="font-medium text-slate-700 block mb-1">
+                <label className="font-medium text-slate-700 block mb-1.5">
                   Lokasi tindakan
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -363,11 +380,11 @@ function BookingModalInner({
                     onClick={() => setVisitType('clinic')}
                     className={`py-2 px-3 rounded-lg font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
                       visitType === 'clinic'
-                        ? 'border-slate-800 bg-slate-50 text-slate-900'
-                        : 'border-slate-200 bg-white text-slate-600 hover:text-slate-900'
+                        ? 'border-[#0472B5] bg-[#EBF4FB] text-[#0472B5]'
+                        : 'border-slate-200 bg-white text-slate-600 hover:text-[#0B2545]'
                     }`}
                   >
-                    <MapPin className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
+                    <MapPin className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
                     <span className="truncate">Klinik Gedung The Vida</span>
                   </button>
 
@@ -376,21 +393,20 @@ function BookingModalInner({
                     onClick={() => setVisitType('homecare')}
                     className={`py-2 px-3 rounded-lg font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
                       visitType === 'homecare'
-                        ? 'border-slate-800 bg-slate-50 text-slate-900'
-                        : 'border-slate-200 bg-white text-slate-600 hover:text-slate-900'
+                        ? 'border-[#0472B5] bg-[#EBF4FB] text-[#0472B5]'
+                        : 'border-slate-200 bg-white text-slate-600 hover:text-[#0B2545]'
                     }`}
                   >
-                    <Clock className="w-3.5 h-3.5 text-teal-800 shrink-0" strokeWidth={1.5} />
-                    <span className="truncate">Homecare ke rumah</span>
+                    <Clock className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+                    <span className="truncate">Home Care ke rumah</span>
                   </button>
                 </div>
               </div>
 
-              {/* Address input if homecare */}
               {visitType === 'homecare' && (
                 <div>
                   <label className="font-medium text-slate-700 block mb-1">
-                    Alamat lengkap kunjungan homecare
+                    Alamat lengkap kunjungan home care
                   </label>
                   <textarea
                     rows={2}
@@ -398,12 +414,11 @@ function BookingModalInner({
                     placeholder="Contoh: Jl. Surya Utama No. 12, Kedoya Selatan, Jakarta Barat"
                     value={homeAddress}
                     onChange={(e) => setHomeAddress(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-[#0B2545] focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:border-[#0472B5]"
                   />
                 </div>
               )}
 
-              {/* Date & Time */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-medium text-slate-700 block mb-1">
@@ -414,7 +429,7 @@ function BookingModalInner({
                     required
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white font-mono tabular-nums focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-[#0B2545] bg-white font-mono tabular-nums focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:border-[#0472B5]"
                   />
                 </div>
 
@@ -430,12 +445,11 @@ function BookingModalInner({
                     }}
                     className="max-w-none space-y-1"
                     labelClassName="text-xs font-medium leading-normal text-slate-700"
-                    triggerClassName="w-full data-[size=default]:h-9 px-3 rounded-lg border-slate-300 text-slate-900 bg-white text-xs font-medium focus-visible:ring-1 focus-visible:ring-teal-700 focus-visible:border-teal-700 cursor-pointer"
+                    triggerClassName="w-full data-[size=default]:h-9 px-3 rounded-lg border-slate-300 text-[#0B2545] bg-white text-xs font-medium focus-visible:ring-1 focus-visible:ring-[#0472B5] focus-visible:border-[#0472B5] cursor-pointer"
                   />
                 </div>
               </div>
 
-              {/* Patient Name & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="font-medium text-slate-700 block mb-1">
@@ -448,7 +462,7 @@ function BookingModalInner({
                       placeholder="Nama lengkap pasien"
                       value={patientName}
                       onChange={(e) => setPatientName(e.target.value)}
-                      className="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
+                      className="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-300 text-[#0B2545] focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:border-[#0472B5]"
                     />
                     <User className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" strokeWidth={1.5} />
                   </div>
@@ -465,44 +479,43 @@ function BookingModalInner({
                       placeholder="0812xxxxxxxx"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-300 text-slate-900 font-mono tabular-nums focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
+                      className="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-300 text-[#0B2545] font-mono tabular-nums focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:border-[#0472B5]"
                     />
                     <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" strokeWidth={1.5} />
                   </div>
                 </div>
               </div>
 
-              {/* Additional Notes */}
               <div>
                 <label className="font-medium text-slate-700 block mb-1">
                   Catatan atau keluhan medis (opsional)
                 </label>
                 <input
                   type="text"
-                  placeholder="Contoh: Riwayat alergi obat, pasca operasi, atau tujuan kebugaran"
+                  placeholder="Riwayat alergi obat, pasca operasi, atau tujuan konsultasi"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-700 focus:border-teal-700"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-[#0B2545] focus:outline-none focus:ring-1 focus:ring-[#0472B5] focus:border-[#0472B5]"
                 />
               </div>
 
-              {/* Submit CTA */}
               <div className="pt-2">
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full py-2.5 px-4 bg-[#ffcf00] hover:bg-[#e5ba00] text-[#02446d] font-bold text-xs sm:text-sm rounded-xl shadow transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 bg-[#0472B5] hover:bg-[#035c93] text-white font-medium text-xs sm:text-sm rounded-full shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4" strokeWidth={2} />
-                  <span>Lanjutkan Reservasi ke WhatsApp Resmi</span>
-                </button>
-                <p className="text-[11px] text-slate-400 font-normal text-center mt-2">
-                  Staf resepsionis Vida Medical Centre akan mengonfirmasi ketersediaan slot jadwal Anda.
+                  <Calendar className="w-4 h-4" strokeWidth={1.5} />
+                  <span>Lanjutkan Reservasi via WhatsApp</span>
+                </motion.button>
+                <p className="text-[11px] text-slate-500 font-normal text-center mt-2">
+                  Resepsionis Vida Medical Centre ({CLINIC_CONTACT.whatsappNumberDisplay}) akan mengonfirmasi jadwal Anda.
                 </p>
               </div>
             </form>
           )}
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

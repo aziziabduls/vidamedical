@@ -298,7 +298,7 @@ export default function CentersOfExcellence({ onOpenBooking }: CentersOfExcellen
                     <span>Jadwalkan Konsultasi</span>
                   </motion.button>
                   <a
-                    href="https://wa.me/628118951181"
+                    href="https://wa.me/628115750260"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium text-xs text-center transition-colors flex items-center justify-center space-x-1.5"
